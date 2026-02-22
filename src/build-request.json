@@ -1,93 +1,73 @@
 {
   "kind": "build_request",
-  "title": "Debug and fix video upload functionality",
+  "title": "Fix 'Login to Upload' button showing authentication error for logged-in users",
   "projectName": "NicheHub",
   "priority": "high",
   "requirements": [
     {
-      "id": "REQ-29",
-      "text": "Debug the VideoUpload component's file upload flow to identify why video uploads are not working. Verify that the file input is properly bound, the handleFileSelect function is correctly invoked on file selection, and the uploadVideo mutation from useQueries is being triggered with the correct parameters (file, thumbnail, workspace).",
+      "id": "REQ-33",
+      "text": "Update the VideoUpload component to check the user's authentication state and hide or disable the 'Login to Upload' button when the user is already authenticated",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-6"
         ],
         "quotes": [
-          "Upload doesn't work"
+          "Whenever I try to click on button longin to upload it say login failed user already authenticated"
         ]
       },
       "acceptanceCriteria": [
-        "File input element in VideoUpload component correctly captures file selection events",
-        "handleFileSelect function is invoked when a video file is selected",
-        "uploadVideo mutation is called with valid file, thumbnail, and workspace parameters"
+        "When a user is authenticated, the 'Login to Upload' button should not be visible or clickable",
+        "The upload interface should be directly accessible to authenticated users without requiring them to click a login button",
+        "No 'login failed user already authenticated' error should appear when an authenticated user interacts with the upload interface"
       ]
     },
     {
-      "id": "REQ-30",
-      "text": "Debug the backend video upload endpoint in main.mo to ensure it properly receives and stores video blobs along with their metadata (caption, thumbnail, workspace). Verify that the storeVideoBlob function correctly persists video data and returns a valid video ID.",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-6"
-        ],
-        "quotes": [
-          "Upload doesn't work"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Backend uploadVideo function accepts video blob, thumbnail blob, caption, and workspace parameters",
-        "Video data is correctly stored in the backend with a unique ID",
-        "Upload function returns success response with the new video ID"
-      ]
-    },
-    {
-      "id": "REQ-31",
-      "text": "Verify that the useQueries hook's uploadVideo mutation properly handles the upload progress tracking, error states, and success callbacks. Ensure that React Query's mutation state updates correctly trigger UI feedback in the VideoUpload component.",
+      "id": "REQ-34",
+      "text": "Verify that the VideoUpload component correctly reads the isAuthenticated state from the useInternetIdentity hook to determine whether to show upload controls or a login prompt",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-6"
         ],
         "quotes": [
-          "Upload doesn't work"
+          "Whenever I try to click on button longin to upload it say login failed user already authenticated"
         ]
       },
       "acceptanceCriteria": [
-        "Upload progress percentage is correctly calculated and displayed during upload",
-        "Error states from failed uploads are captured and displayed to the user via toast notifications",
-        "Successful uploads trigger UI updates showing the newly uploaded video in the media library"
+        "The VideoUpload component should use the isAuthenticated boolean from useInternetIdentity to conditionally render UI",
+        "When isAuthenticated is true, the file input and upload controls should be visible",
+        "When isAuthenticated is false, only the login prompt should be visible"
       ]
     },
     {
-      "id": "REQ-32",
-      "text": "Add comprehensive error logging to the video upload flow in both frontend (VideoUpload component and useQueries hook) and backend (main.mo uploadVideo function) to capture detailed error information including file validation failures, network errors, and backend processing errors.",
-      "target": "both",
+      "id": "REQ-35",
+      "text": "Remove or fix any duplicate login invocation logic in the VideoUpload component that might be causing the 'user already authenticated' error message",
+      "target": "frontend",
       "source": {
         "messageIds": [
           "msg-6"
         ],
         "quotes": [
-          "Upload doesn't work"
+          "Whenever I try to click on button longin to upload it say login failed user already authenticated"
         ]
       },
       "acceptanceCriteria": [
-        "Console logs show detailed error information when upload fails",
-        "User receives clear error messages via toast notifications explaining what went wrong",
-        "Backend logs capture any errors during blob storage or metadata persistence"
+        "The login function should only be called when the user is not authenticated",
+        "No error messages about 'user already authenticated' should appear in the UI or console",
+        "Login attempts should be prevented when isAuthenticated is already true"
       ]
     }
   ],
   "constraints": [
-    "Maintain Internet Identity authentication requirement before allowing uploads",
-    "Preserve thumbnail generation functionality using thumbnailGenerator.ts",
-    "Do not change the workspace-based video storage architecture",
-    "Keep the existing React Query mutation patterns in useQueries.ts"
+    "Maintain the existing useInternetIdentity hook interface and authentication flow",
+    "Do not modify the Internet Identity authentication mechanism itself",
+    "Preserve the current video upload functionality for authenticated users"
   ],
   "nonGoals": [
-    "Adding new upload features or file format support",
-    "Changing the UI design or layout of the VideoUpload component",
-    "Modifying the authentication flow or user management",
-    "Implementing batch upload functionality"
+    "Changing the overall authentication system or adding alternative login methods",
+    "Modifying the backend authentication validation logic",
+    "Adding new authentication features beyond fixing the button error"
   ],
   "imageRequirements": {
     "required": [],

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 15,
+  "projectStateVersion": 17,
   "summary": "NicheHub: A mobile content management and social media scheduling app that allows users to manage two niche workspaces (Travel and AI Learning), repurpose video content with AI-generated captions for multiple platforms, and schedule posts via a visual calendar. The app uses Internet Identity for authentication and provides a manual export workflow where users can generate optimized captions and prepare content for Facebook, TikTok, and Instagram, then copy/paste to each platform's native app.",
   "architectural_notes": [
     "Mobile-first responsive design optimized for on-the-go use",
@@ -15,7 +15,8 @@
     "Script Lab feature for specialized AI content generation with structured output formats"
   ],
   "known_issues": [
-    "Video upload functionality is not working"
+    "Video upload functionality is not working",
+    "Login to Upload button shows 'login failed user already authenticated' error when clicked by authenticated users"
   ],
   "isFixRequest": true,
   "existing_features": [
@@ -240,6 +241,30 @@
       "title": "Add comprehensive error logging to the video upload flow in both frontend (VideoUpload component and useQueries hook) and backend (main.mo uploadVideo function) to capture detailed error information including file validation failures, network errors, and backend processing errors.",
       "reqIds": [
         "REQ-32"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-videoupload-component-to-check-the-user-s-authentication-state-and-hide-or-disable-the-login-to-upload-button-when-the-user-is-already-authenticated",
+      "title": "Update the VideoUpload component to check the user's authentication state and hide or disable the 'Login to Upload' button when the user is already authenticated",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-that-the-videoupload-component-correctly-reads-the-isauthenticated-state-from-the-useinternetidentity-hook-to-determine-whether-to-show-upload-controls-or-a-login-prompt",
+      "title": "Verify that the VideoUpload component correctly reads the isAuthenticated state from the useInternetIdentity hook to determine whether to show upload controls or a login prompt",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-or-fix-any-duplicate-login-invocation-logic-in-the-videoupload-component-that-might-be-causing-the-user-already-authenticated-error-message",
+      "title": "Remove or fix any duplicate login invocation logic in the VideoUpload component that might be causing the 'user already authenticated' error message",
+      "reqIds": [
+        "REQ-35"
       ],
       "version": 1
     }

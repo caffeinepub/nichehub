@@ -1,73 +1,53 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Debug and fix video upload functionality",
+  "title": "Fix 'Login to Upload' button showing authentication error for logged-in users",
   "requirements": [
     {
-      "id": "REQ-29",
-      "summary": "Debug VideoUpload component's file upload flow to ensure file input binding, handleFileSelect invocation, and uploadVideo mutation triggering work correctly",
+      "id": "REQ-33",
+      "summary": "Update the VideoUpload component to check the user's authentication state and hide or disable the 'Login to Upload' button when the user is already authenticated",
       "acceptanceCriteria": [
-        "File input element in VideoUpload component correctly captures file selection events",
-        "handleFileSelect function is invoked when a video file is selected",
-        "uploadVideo mutation is called with valid file, thumbnail, and workspace parameters"
+        "When a user is authenticated, the 'Login to Upload' button should not be visible or clickable",
+        "The upload interface should be directly accessible to authenticated users without requiring them to click a login button",
+        "No 'login failed user already authenticated' error should appear when an authenticated user interacts with the upload interface"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/VideoUpload.tsx",
           "operation": "modify",
-          "description": "Add debugging console logs to trace the file upload flow. Log when file input onChange fires, log the selected file details in handleFileSelect, log before calling uploadVideo mutation with all parameters (file, thumbnail, workspace), and log the mutation response. Verify the file input ref is properly connected and the handleFileSelect function correctly processes the selected video file. Ensure the ExternalBlob.fromBytes conversion happens correctly for both video file and thumbnail. Add error boundary logging to catch any exceptions during file processing."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Add comprehensive logging to the uploadVideo mutation to trace its execution. Log when the mutation is triggered with parameters, log the actor method call with workspace, id, file blob, caption, and thumbnail, and log the mutation result or error. Verify that the ExternalBlob instances are correctly passed to the backend uploadVideo method. Ensure the mutation's onSuccess and onError callbacks are properly configured and log their invocation. Verify the component usage instructions for the blob-storage component before implementing ExternalBlob handling."
+          "description": "Update the VideoUpload component to conditionally render the 'Login to Upload' button only when isAuthenticated is false. When isAuthenticated is true, directly show the file input and upload controls without requiring any login interaction. Remove or hide the login button from the authenticated user's view to prevent the 'user already authenticated' error."
         }
       ]
     },
     {
-      "id": "REQ-31",
-      "summary": "Verify useQueries hook's uploadVideo mutation handles upload progress tracking, error states, and success callbacks correctly with proper UI feedback",
+      "id": "REQ-34",
+      "summary": "Verify that the VideoUpload component correctly reads the isAuthenticated state from the useInternetIdentity hook to determine whether to show upload controls or a login prompt",
       "acceptanceCriteria": [
-        "Upload progress percentage is correctly calculated and displayed during upload",
-        "Error states from failed uploads are captured and displayed to the user via toast notifications",
-        "Successful uploads trigger UI updates showing the newly uploaded video in the media library"
+        "The VideoUpload component should use the isAuthenticated boolean from useInternetIdentity to conditionally render UI",
+        "When isAuthenticated is true, the file input and upload controls should be visible",
+        "When isAuthenticated is false, only the login prompt should be visible"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Debug the uploadVideo mutation's progress tracking implementation. Verify that the ExternalBlob.withUploadProgress method is correctly attached to the video file blob before upload, and that the progress callback updates state properly. Add logging to track progress percentage values as they're reported. Ensure the mutation's isLoading and isError states are correctly exposed and used by the VideoUpload component. Verify that onSuccess callback triggers query invalidation for the videos list. Add detailed error logging in the onError callback to capture and display error messages via toast. Verify the component usage instructions for the blob-storage component before implementing upload progress handling."
-        },
-        {
           "path": "frontend/src/components/VideoUpload.tsx",
           "operation": "modify",
-          "description": "Debug the UI feedback for upload states. Verify that uploadProgress state correctly receives and displays percentage updates from the ExternalBlob progress callback. Add logging to track when progress state updates occur. Ensure error states from the mutation trigger toast notifications with clear error messages. Verify that successful uploads clear the form state and show success feedback. Add logging to confirm that the mutation's isLoading, isError, and isSuccess states correctly control UI elements (progress bar, buttons, status messages). Ensure the upload button is properly disabled during upload and re-enabled on completion or error."
+          "description": "Review and ensure the component properly consumes the isAuthenticated state from useInternetIdentity hook. Implement conditional rendering logic that shows file input and upload controls when isAuthenticated equals true, and shows only the login prompt when isAuthenticated equals false. Ensure there is a clear separation between authenticated and unauthenticated UI states with no overlap or duplicate controls."
         }
       ]
     },
     {
-      "id": "REQ-32",
-      "summary": "Add comprehensive error logging to video upload flow in frontend components to capture file validation failures, network errors, and processing errors",
+      "id": "REQ-35",
+      "summary": "Remove or fix any duplicate login invocation logic in the VideoUpload component that might be causing the 'user already authenticated' error message",
       "acceptanceCriteria": [
-        "Console logs show detailed error information when upload fails",
-        "User receives clear error messages via toast notifications explaining what went wrong",
-        "Backend logs capture any errors during blob storage or metadata persistence"
+        "The login function should only be called when the user is not authenticated",
+        "No error messages about 'user already authenticated' should appear in the UI or console",
+        "Login attempts should be prevented when isAuthenticated is already true"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/VideoUpload.tsx",
           "operation": "modify",
-          "description": "Add comprehensive error logging throughout the upload flow. Log file validation results (file type, size checks), log thumbnail generation attempts and results, log any exceptions during file reading or processing, and log the full error object when uploads fail. Add try-catch blocks around file processing operations with detailed error logging. Ensure all error paths trigger user-friendly toast notifications with actionable error messages (e.g., 'Video file is too large', 'Failed to generate thumbnail', 'Network error during upload'). Log the workspace context and authentication state when errors occur to aid debugging."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Add detailed error logging to the uploadVideo mutation. In the onError callback, log the complete error object including error type, message, and any nested error details. Log the mutation variables (workspace, file size, thumbnail presence) when errors occur. Add try-catch blocks around the actor method call to capture and log synchronous errors. Ensure error messages are user-friendly and displayed via toast notifications. Log network-related errors separately from backend validation errors to help identify the failure source. Add logging for query invalidation failures after successful uploads."
-        },
-        {
-          "path": "frontend/src/utils/thumbnailGenerator.ts",
-          "operation": "modify",
-          "description": "Add error logging to thumbnail generation function. Log when video loading starts, log video metadata (duration, dimensions) once loaded, log canvas drawing operations, and log blob conversion results. Add try-catch blocks around video loading, canvas operations, and blob conversion with detailed error messages. Log the video file size and type to help diagnose loading failures. Ensure errors during thumbnail generation are propagated to the caller with clear error messages (e.g., 'Failed to load video for thumbnail', 'Canvas drawing failed', 'Blob conversion failed')."
+          "description": "Identify and remove any duplicate or unnecessary login function calls that trigger when the user is already authenticated. Add a guard condition to prevent the login function from being invoked when isAuthenticated is true. Ensure the 'Login to Upload' button's click handler checks authentication state before attempting login, preventing the 'user already authenticated' error from appearing in the UI or console."
         }
       ]
     }

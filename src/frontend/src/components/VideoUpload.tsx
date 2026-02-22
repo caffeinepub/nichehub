@@ -14,7 +14,9 @@ export default function VideoUpload() {
   const { mutate: uploadVideo, isPending } = useUploadVideo();
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { isLoginSuccess, login, isLoggingIn } = useInternetIdentity();
+  const { identity, login, isLoggingIn } = useInternetIdentity();
+
+  const isAuthenticated = !!identity && !identity.getPrincipal().isAnonymous();
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log('[VideoUpload] File input onChange fired');
@@ -91,9 +93,9 @@ export default function VideoUpload() {
   };
 
   const handleClick = async () => {
-    console.log('[VideoUpload] Upload button clicked, isLoginSuccess:', isLoginSuccess);
+    console.log('[VideoUpload] Upload button clicked, isAuthenticated:', isAuthenticated);
     
-    if (!isLoginSuccess) {
+    if (!isAuthenticated) {
       console.log('[VideoUpload] User not logged in, initiating login...');
       try {
         await login();
@@ -118,7 +120,7 @@ export default function VideoUpload() {
           accept="video/*"
           onChange={handleFileSelect}
           className="hidden"
-          disabled={isPending || !isLoginSuccess}
+          disabled={isPending || !isAuthenticated}
         />
         
         <Button
@@ -127,7 +129,7 @@ export default function VideoUpload() {
           className="w-full h-24 text-lg"
           size="lg"
         >
-          {!isLoginSuccess ? (
+          {!isAuthenticated ? (
             isLoggingIn ? (
               <>
                 <Loader2 className="w-6 h-6 mr-2 animate-spin" />
