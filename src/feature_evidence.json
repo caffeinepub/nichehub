@@ -2,10 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-the-videoupload-component-to-check-the-user-s-authentication-state-and-hide-or-disable-the-login-to-upload-button-when-the-user-is-already-authenticated",
-      "featureTitle": "Update the VideoUpload component to check the user's authentication state and hide or disable the 'Login to Upload' button when the user is already authenticated",
+      "featureId": "feature-integrate-a-video-processing-library-ffmpeg-wasm-or-html5-canvas-overlay-system-into-the-frontend-to-enable-burning-generated-script-text-directly-onto-video-files-as-a-permanent-layer",
+      "featureTitle": "Integrate a video processing library (ffmpeg.wasm or HTML5 Canvas overlay system) into the frontend to enable burning generated script text directly onto video files as a permanent layer",
       "files": [
-        "frontend/src/components/VideoUpload.tsx"
+        "frontend/src/hooks/useVideoProcessor.ts",
+        "frontend/src/utils/videoProcessor.ts"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -16,15 +17,16 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-33"
+        "REQ-41"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-verify-that-the-videoupload-component-correctly-reads-the-isauthenticated-state-from-the-useinternetidentity-hook-to-determine-whether-to-show-upload-controls-or-a-login-prompt",
-      "featureTitle": "Verify that the VideoUpload component correctly reads the isAuthenticated state from the useInternetIdentity hook to determine whether to show upload controls or a login prompt",
+      "featureId": "feature-add-text-overlay-customization-controls-in-the-scriptlab-component-that-allow-users-to-select-font-color-and-position-top-center-bottom-after-an-itinerary-script-is-generated",
+      "featureTitle": "Add text overlay customization controls in the ScriptLab component that allow users to select Font, Color, and Position (Top, Center, Bottom) after an itinerary script is generated",
       "files": [
-        "frontend/src/components/VideoUpload.tsx"
+        "frontend/src/components/ScriptLab.tsx",
+        "frontend/src/components/TextOverlaySettings.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -35,15 +37,15 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-34"
+        "REQ-42"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-remove-or-fix-any-duplicate-login-invocation-logic-in-the-videoupload-component-that-might-be-causing-the-user-already-authenticated-error-message",
-      "featureTitle": "Remove or fix any duplicate login invocation logic in the VideoUpload component that might be causing the 'user already authenticated' error message",
+      "featureId": "feature-add-an-export-with-captions-button-in-the-scriptlab-component-that-renders-a-new-video-version-with-the-ai-generated-script-text-permanently-overlaid-using-the-selected-font-color-and-position-settings-and-provides-a-download-link-for-the-processed-video-file",
+      "featureTitle": "Add an 'Export with Captions' button in the ScriptLab component that renders a new video version with the AI-generated script text permanently overlaid using the selected font, color, and position settings, and provides a download link for the processed video file",
       "files": [
-        "frontend/src/components/VideoUpload.tsx"
+        "frontend/src/components/ScriptLab.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -54,7 +56,45 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-35"
+        "REQ-43"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-text-overlay-customization-controls-in-the-repurposemodal-component-that-allow-users-to-select-font-color-and-position-top-center-bottom-after-ai-captions-are-generated-for-facebook-instagram-and-tiktok",
+      "featureTitle": "Add text overlay customization controls in the RepurposeModal component that allow users to select Font, Color, and Position (Top, Center, Bottom) after AI captions are generated for Facebook, Instagram, and TikTok",
+      "files": [
+        "frontend/src/components/RepurposeModal.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-44"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-an-export-with-captions-button-in-the-repurposemodal-component-that-renders-a-new-video-version-with-the-platform-specific-ai-generated-caption-text-permanently-overlaid-using-the-selected-font-color-and-position-settings-and-provides-a-download-link-for-the-processed-video-file",
+      "featureTitle": "Add an 'Export with Captions' button in the RepurposeModal component that renders a new video version with the platform-specific AI-generated caption text permanently overlaid using the selected font, color, and position settings, and provides a download link for the processed video file",
+      "files": [
+        "frontend/src/components/RepurposeModal.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-45"
       ],
       "confidence": "high"
     }

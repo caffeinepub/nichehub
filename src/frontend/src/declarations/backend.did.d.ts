@@ -21,6 +21,7 @@ export interface Itinerary {
   'cta' : string,
   'days' : Array<string>,
   'hook' : string,
+  'writingPrompt' : string,
 }
 export type Platform = { 'tiktok' : null } |
   { 'instagram' : null } |
@@ -76,7 +77,7 @@ export interface _SERVICE {
   'getVideoWorkspace' : ActorMethod<[string], Workspace>,
   'getVideosByWorkspace' : ActorMethod<[Workspace], Array<Video>>,
   'saveItinerary' : ActorMethod<
-    [string, string, Array<string>, string],
+    [string, string, Array<string>, string, string],
     undefined
   >,
   'schedulePost' : ActorMethod<

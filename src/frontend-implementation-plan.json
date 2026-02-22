@@ -1,53 +1,113 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix 'Login to Upload' button showing authentication error for logged-in users",
+  "title": "Add video text overlay engine with customizable captions and export",
   "requirements": [
     {
-      "id": "REQ-33",
-      "summary": "Update the VideoUpload component to check the user's authentication state and hide or disable the 'Login to Upload' button when the user is already authenticated",
+      "id": "REQ-41",
+      "summary": "Integrate video processing library for burning text overlays onto videos",
       "acceptanceCriteria": [
-        "When a user is authenticated, the 'Login to Upload' button should not be visible or clickable",
-        "The upload interface should be directly accessible to authenticated users without requiring them to click a login button",
-        "No 'login failed user already authenticated' error should appear when an authenticated user interacts with the upload interface"
+        "ffmpeg.wasm or equivalent video processing library is installed and initialized in the frontend",
+        "The system can load a video file and render text overlays onto it",
+        "Text can be permanently burned into the video output file"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/VideoUpload.tsx",
+          "path": "frontend/package.json",
           "operation": "modify",
-          "description": "Update the VideoUpload component to conditionally render the 'Login to Upload' button only when isAuthenticated is false. When isAuthenticated is true, directly show the file input and upload controls without requiring any login interaction. Remove or hide the login button from the authenticated user's view to prevent the 'user already authenticated' error."
+          "description": "Add @ffmpeg/ffmpeg and @ffmpeg/util as dependencies to enable client-side video processing with text overlay capabilities"
+        },
+        {
+          "path": "frontend/src/utils/videoProcessor.ts",
+          "operation": "create",
+          "description": "Create a video processing utility that initializes ffmpeg.wasm, loads video files, applies text overlays with customizable font/color/position, and exports processed videos as MP4 files with progress tracking"
+        },
+        {
+          "path": "frontend/src/hooks/useVideoProcessor.ts",
+          "operation": "create",
+          "description": "Create a React hook that manages ffmpeg initialization state, provides methods for processing videos with text overlays, tracks processing progress, and handles loading/error states"
         }
       ]
     },
     {
-      "id": "REQ-34",
-      "summary": "Verify that the VideoUpload component correctly reads the isAuthenticated state from the useInternetIdentity hook to determine whether to show upload controls or a login prompt",
+      "id": "REQ-42",
+      "summary": "Add text overlay customization controls in ScriptLab for font, color, and position selection",
       "acceptanceCriteria": [
-        "The VideoUpload component should use the isAuthenticated boolean from useInternetIdentity to conditionally render UI",
-        "When isAuthenticated is true, the file input and upload controls should be visible",
-        "When isAuthenticated is false, only the login prompt should be visible"
+        "A settings panel appears in ScriptLab after script generation with Font, Color, and Position controls",
+        "Users can select from multiple font options",
+        "Users can choose text color via color picker or preset colors",
+        "Users can choose text position: Top, Center, or Bottom",
+        "Selected settings are preserved when generating the final video output"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/VideoUpload.tsx",
+          "path": "frontend/src/components/TextOverlaySettings.tsx",
+          "operation": "create",
+          "description": "Create a reusable settings panel component with font selector dropdown (e.g., Arial, Helvetica, Impact, Times New Roman), color picker input for text color, and position radio buttons (Top/Center/Bottom). Use shadcn/ui components (Select, Input, RadioGroup, Label) for consistent styling."
+        },
+        {
+          "path": "frontend/src/components/ScriptLab.tsx",
           "operation": "modify",
-          "description": "Review and ensure the component properly consumes the isAuthenticated state from useInternetIdentity hook. Implement conditional rendering logic that shows file input and upload controls when isAuthenticated equals true, and shows only the login prompt when isAuthenticated equals false. Ensure there is a clear separation between authenticated and unauthenticated UI states with no overlap or duplicate controls."
+          "description": "Import and render the TextOverlaySettings component after script generation is complete. Store selected overlay settings (font, color, position) in component state and pass them to the export functionality. Display the settings panel conditionally when a script exists and a video is selected."
         }
       ]
     },
     {
-      "id": "REQ-35",
-      "summary": "Remove or fix any duplicate login invocation logic in the VideoUpload component that might be causing the 'user already authenticated' error message",
+      "id": "REQ-43",
+      "summary": "Add Export with Captions button in ScriptLab to render and download captioned videos",
       "acceptanceCriteria": [
-        "The login function should only be called when the user is not authenticated",
-        "No error messages about 'user already authenticated' should appear in the UI or console",
-        "Login attempts should be prevented when isAuthenticated is already true"
+        "An 'Export with Captions' button is visible in ScriptLab after script generation and overlay settings are configured",
+        "Clicking the button triggers video processing that burns the script text onto the video",
+        "The processed video maintains high quality and original resolution",
+        "A download link or automatic download is provided for the captioned video file",
+        "The exported video file is in a format compatible with mobile devices and social media platforms (MP4)",
+        "Processing progress is displayed with a loading indicator",
+        "Success and error states are communicated via toast notifications"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/VideoUpload.tsx",
+          "path": "frontend/src/components/ScriptLab.tsx",
           "operation": "modify",
-          "description": "Identify and remove any duplicate or unnecessary login function calls that trigger when the user is already authenticated. Add a guard condition to prevent the login function from being invoked when isAuthenticated is true. Ensure the 'Login to Upload' button's click handler checks authentication state before attempting login, preventing the 'user already authenticated' error from appearing in the UI or console."
+          "description": "Add an 'Export with Captions' button (using shadcn Button component) that appears after script generation. Wire the button to call useVideoProcessor hook with the selected video URL (via ExternalBlob.getDirectURL()), formatted script text, and overlay settings (font, color, position). Display processing progress with a progress bar or spinner. Show success toast with download link on completion, and error toast on failure. Automatically trigger file download when processing completes."
+        }
+      ]
+    },
+    {
+      "id": "REQ-44",
+      "summary": "Add text overlay customization controls in RepurposeModal for font, color, and position selection",
+      "acceptanceCriteria": [
+        "A settings panel appears in RepurposeModal after caption generation with Font, Color, and Position controls",
+        "Users can select from multiple font options",
+        "Users can choose text color via color picker or preset colors",
+        "Users can choose text position: Top, Center, or Bottom",
+        "Selected settings are preserved for the export operation"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/RepurposeModal.tsx",
+          "operation": "modify",
+          "description": "Import and render the TextOverlaySettings component after AI captions are generated. Store selected overlay settings (font, color, position) in component state for use during export. Display the settings panel conditionally when captions exist for at least one platform."
+        }
+      ]
+    },
+    {
+      "id": "REQ-45",
+      "summary": "Add Export with Captions button in RepurposeModal to render and download platform-specific captioned videos",
+      "acceptanceCriteria": [
+        "An 'Export with Captions' button is visible in RepurposeModal after captions are generated and overlay settings are configured",
+        "Clicking the button triggers video processing that burns the selected platform caption text onto the video",
+        "Users can choose which platform's caption to burn onto the video (Facebook, Instagram, or TikTok)",
+        "The processed video maintains high quality and original resolution",
+        "A download link or automatic download is provided for the captioned video file",
+        "The exported video file is in MP4 format compatible with mobile devices and social media platforms",
+        "Processing progress is displayed with a loading indicator",
+        "Success and error states are communicated via toast notifications"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/RepurposeModal.tsx",
+          "operation": "modify",
+          "description": "Add a platform selector (Radio Group or Tabs using shadcn/ui) to choose which platform's caption text to burn onto the video (Facebook, Instagram, or TikTok). Add an 'Export with Captions' button that calls useVideoProcessor hook with the video URL (via ExternalBlob.getDirectURL()), selected platform caption text, and overlay settings. Display processing progress with a loading indicator. Show success toast with download link on completion, and error toast on failure. Automatically trigger file download when processing completes."
         }
       ]
     }

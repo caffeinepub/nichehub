@@ -24,6 +24,7 @@ export const Itinerary = IDL.Record({
   'cta' : IDL.Text,
   'days' : IDL.Vec(IDL.Text),
   'hook' : IDL.Text,
+  'writingPrompt' : IDL.Text,
 });
 export const Time = IDL.Int;
 export const Platform = IDL.Variant({
@@ -94,7 +95,7 @@ export const idlService = IDL.Service({
   'getVideoWorkspace' : IDL.Func([IDL.Text], [Workspace], ['query']),
   'getVideosByWorkspace' : IDL.Func([Workspace], [IDL.Vec(Video)], ['query']),
   'saveItinerary' : IDL.Func(
-      [IDL.Text, IDL.Text, IDL.Vec(IDL.Text), IDL.Text],
+      [IDL.Text, IDL.Text, IDL.Vec(IDL.Text), IDL.Text, IDL.Text],
       [],
       [],
     ),
@@ -129,6 +130,7 @@ export const idlFactory = ({ IDL }) => {
     'cta' : IDL.Text,
     'days' : IDL.Vec(IDL.Text),
     'hook' : IDL.Text,
+    'writingPrompt' : IDL.Text,
   });
   const Time = IDL.Int;
   const Platform = IDL.Variant({
@@ -199,7 +201,7 @@ export const idlFactory = ({ IDL }) => {
     'getVideoWorkspace' : IDL.Func([IDL.Text], [Workspace], ['query']),
     'getVideosByWorkspace' : IDL.Func([Workspace], [IDL.Vec(Video)], ['query']),
     'saveItinerary' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Vec(IDL.Text), IDL.Text],
+        [IDL.Text, IDL.Text, IDL.Vec(IDL.Text), IDL.Text, IDL.Text],
         [],
         [],
       ),

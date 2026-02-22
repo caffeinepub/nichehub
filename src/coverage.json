@@ -1,46 +1,73 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-22T02:00:48.811Z",
+  "generatedAt": "2026-02-22T16:29:50.023Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 5,
+    "implemented": 5,
     "items": [
       {
-        "id": "REQ-33",
-        "summary": "Update the VideoUpload component to check the user's authentication state and hide or disable the 'Login to Upload' button when the user is already authenticated",
+        "id": "REQ-41",
+        "summary": "Integrate a video processing library (ffmpeg.wasm or HTML5 Canvas overlay system) into the frontend to enable burning generated script text directly onto video files as a permanent layer",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/VideoUpload.tsx"
+          "frontend/package.json",
+          "frontend/src/utils/videoProcessor.ts",
+          "frontend/src/hooks/useVideoProcessor.ts"
         ],
         "matchedFiles": [
-          "frontend/src/components/VideoUpload.tsx"
+          "frontend/src/utils/videoProcessor.ts",
+          "frontend/src/hooks/useVideoProcessor.ts"
         ]
       },
       {
-        "id": "REQ-34",
-        "summary": "Verify that the VideoUpload component correctly reads the isAuthenticated state from the useInternetIdentity hook to determine whether to show upload controls or a login prompt",
+        "id": "REQ-42",
+        "summary": "Add text overlay customization controls in the ScriptLab component that allow users to select Font, Color, and Position (Top, Center, Bottom) after an itinerary script is generated",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/VideoUpload.tsx"
+          "frontend/src/components/TextOverlaySettings.tsx",
+          "frontend/src/components/ScriptLab.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/VideoUpload.tsx"
+          "frontend/src/components/TextOverlaySettings.tsx",
+          "frontend/src/components/ScriptLab.tsx"
         ]
       },
       {
-        "id": "REQ-35",
-        "summary": "Remove or fix any duplicate login invocation logic in the VideoUpload component that might be causing the 'user already authenticated' error message",
+        "id": "REQ-43",
+        "summary": "Add an 'Export with Captions' button in the ScriptLab component that renders a new video version with the AI-generated script text permanently overlaid using the selected font, color, and position settings, and provides a download link for the processed video file",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/VideoUpload.tsx"
+          "frontend/src/components/ScriptLab.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/VideoUpload.tsx"
+          "frontend/src/components/ScriptLab.tsx"
+        ]
+      },
+      {
+        "id": "REQ-44",
+        "summary": "Add text overlay customization controls in the RepurposeModal component that allow users to select Font, Color, and Position (Top, Center, Bottom) after AI captions are generated for Facebook, Instagram, and TikTok",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/RepurposeModal.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/RepurposeModal.tsx"
+        ]
+      },
+      {
+        "id": "REQ-45",
+        "summary": "Add an 'Export with Captions' button in the RepurposeModal component that renders a new video version with the platform-specific AI-generated caption text permanently overlaid using the selected font, color, and position settings, and provides a download link for the processed video file",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/RepurposeModal.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/RepurposeModal.tsx"
         ]
       }
     ]
@@ -50,7 +77,12 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/VideoUpload.tsx",
+    "frontend/src/components/RepurposeModal.tsx",
+    "frontend/src/components/ScriptLab.tsx",
+    "frontend/src/components/TextOverlaySettings.tsx",
+    "frontend/src/hooks/useVideoProcessor.ts",
+    "frontend/src/utils/videoProcessor.ts",
+    "frontend/vite.config.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

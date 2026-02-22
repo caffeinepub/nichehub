@@ -32,6 +32,7 @@ export interface Itinerary {
     cta: string;
     days: Array<string>;
     hook: string;
+    writingPrompt: string;
 }
 export interface ScheduledPost {
     scheduledTime: Time;
@@ -56,7 +57,7 @@ export interface backendInterface {
     getScheduledPosts(workspace: Workspace): Promise<Array<ScheduledPost>>;
     getVideoWorkspace(id: string): Promise<Workspace>;
     getVideosByWorkspace(workspace: Workspace): Promise<Array<Video>>;
-    saveItinerary(id: string, hook: string, days: Array<string>, cta: string): Promise<void>;
+    saveItinerary(id: string, hook: string, days: Array<string>, cta: string, writingPrompt: string): Promise<void>;
     schedulePost(videoId: string, workspace: Workspace, platforms: Array<Platform>, captions: Caption, scheduledTime: Time): Promise<void>;
     uploadVideo(workspace: Workspace, id: string, file: ExternalBlob, caption: string, thumbnail: ExternalBlob | null): Promise<string>;
 }

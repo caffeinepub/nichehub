@@ -10,13 +10,18 @@ import {
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Loader2, Copy, Calendar as CalendarIcon } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Loader2, Copy, Download } from 'lucide-react';
 import { SiFacebook, SiInstagram, SiTiktok } from 'react-icons/si';
 import { generateCaptions } from '../utils/captionGenerator';
 import ScheduleButton from './ScheduleButton';
 import { Checkbox } from '@/components/ui/checkbox';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from 'sonner';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useWorkspace } from '../contexts/WorkspaceContext';
+import TextOverlaySettings, { TextOverlayConfig } from './TextOverlaySettings';
+import { useVideoProcessor } from '../hooks/useVideoProcessor';
 
 interface RepurposeModalProps {
   video: Video;
@@ -27,12 +32,25 @@ interface RepurposeModalProps {
 export default function RepurposeModal({ video, open, onClose }: RepurposeModalProps) {
   const [captions, setCaptions] = useState<Caption | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [customPrompt, setCustomPrompt] = useState('');
   const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>([
     Platform.facebook,
     Platform.instagram,
     Platform.tiktok,
   ]);
+  const [exportPlatform, setExportPlatform] = useState<Platform>(Platform.instagram);
   const { isLoginSuccess } = useInternetIdentity();
+  const { workspace } = useWorkspace();
+
+  // Text overlay settings
+  const [overlaySettings, setOverlaySettings] = useState<TextOverlayConfig>({
+    font: 'Arial',
+    color: '#FFFFFF',
+    position: 'bottom',
+  });
+
+  // Video processor
+  const { processVideo, isProcessing, progress } = useVideoProcessor();
 
   useEffect(() => {
     if (open && !captions) {
@@ -43,7 +61,10 @@ export default function RepurposeModal({ video, open, onClose }: RepurposeModalP
   const handleGenerate = async () => {
     setIsGenerating(true);
     try {
-      const generated = await generateCaptions(video.caption || '');
+      const generated = await generateCaptions(
+        customPrompt || video.caption || '',
+        workspace
+      );
       setCaptions(generated);
     } catch (error) {
       console.error('Failed to generate captions:', error);
@@ -87,6 +108,36 @@ ${captions.tiktok}
     });
   };
 
+  const handleExportWithCaptions = async () => {
+    if (!captions) return;
+
+    try {
+      // Get the caption text for the selected platform
+      const captionText = captions[exportPlatform];
+
+      toast.info('Processing video with captions...');
+
+      // Process the video
+      const videoUrl = video.file.getDirectURL();
+      const processedBlob = await processVideo(videoUrl, captionText, overlaySettings);
+
+      // Create download link
+      const url = URL.createObjectURL(processedBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${video.caption.substring(0, 30)}_${exportPlatform}_captioned.webm`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      toast.success('Video exported successfully!');
+    } catch (error) {
+      console.error('Export error:', error);
+      toast.error('Failed to export video with captions');
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -108,6 +159,34 @@ ${captions.tiktok}
                 Please log in to schedule posts
               </div>
             )}
+
+            <div>
+              <Label htmlFor="custom-prompt" className="text-base font-semibold mb-2 block">
+                Custom Writing Prompt (optional)
+              </Label>
+              <Textarea
+                id="custom-prompt"
+                value={customPrompt}
+                onChange={(e) => setCustomPrompt(e.target.value)}
+                placeholder="E.g., write about the best restaurants in Tokyo, create a caption about travel tips, etc."
+                rows={3}
+                className="resize-none"
+              />
+              <Button
+                onClick={handleGenerate}
+                variant="outline"
+                size="sm"
+                className="mt-2 gap-2"
+                disabled={isGenerating}
+              >
+                {isGenerating ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Loader2 className="w-4 h-4" />
+                )}
+                Regenerate with Prompt
+              </Button>
+            </div>
 
             <div className="space-y-4">
               <div className="flex items-center gap-4">
@@ -204,6 +283,76 @@ ${captions.tiktok}
                 onScheduled={onClose}
                 disabled={!isLoginSuccess}
               />
+            </div>
+
+            {/* Text Overlay Settings */}
+            <div className="border-t pt-6">
+              <TextOverlaySettings settings={overlaySettings} onChange={setOverlaySettings} />
+            </div>
+
+            {/* Platform Selection for Export */}
+            <div className="space-y-3">
+              <Label className="text-base font-semibold">Select Platform Caption to Burn:</Label>
+              <RadioGroup
+                value={exportPlatform}
+                onValueChange={(value: Platform) => setExportPlatform(value)}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={Platform.facebook} id="export-facebook" />
+                  <Label htmlFor="export-facebook" className="cursor-pointer font-normal flex items-center gap-2">
+                    <SiFacebook className="w-4 h-4" />
+                    Facebook
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={Platform.instagram} id="export-instagram" />
+                  <Label htmlFor="export-instagram" className="cursor-pointer font-normal flex items-center gap-2">
+                    <SiInstagram className="w-4 h-4" />
+                    Instagram
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={Platform.tiktok} id="export-tiktok" />
+                  <Label htmlFor="export-tiktok" className="cursor-pointer font-normal flex items-center gap-2">
+                    <SiTiktok className="w-4 h-4" />
+                    TikTok
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            {/* Export Button */}
+            <div className="space-y-4">
+              {isProcessing && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">{progress.message}</span>
+                    <span className="font-medium">{progress.percentage}%</span>
+                  </div>
+                  <Progress value={progress.percentage} className="h-2" />
+                </div>
+              )}
+              <Button
+                onClick={handleExportWithCaptions}
+                disabled={isProcessing}
+                className="w-full gap-2"
+                size="lg"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-5 h-5" />
+                    Export with Captions
+                  </>
+                )}
+              </Button>
+              <p className="text-xs text-muted-foreground text-center">
+                This will download a new video with the {exportPlatform} caption burned into it
+              </p>
             </div>
           </div>
         ) : null}

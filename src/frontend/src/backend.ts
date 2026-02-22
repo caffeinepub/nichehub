@@ -114,6 +114,7 @@ export interface Itinerary {
     cta: string;
     days: Array<string>;
     hook: string;
+    writingPrompt: string;
 }
 export interface _CaffeineStorageRefillResult {
     success?: boolean;
@@ -148,7 +149,7 @@ export interface backendInterface {
     getScheduledPosts(workspace: Workspace): Promise<Array<ScheduledPost>>;
     getVideoWorkspace(id: string): Promise<Workspace>;
     getVideosByWorkspace(workspace: Workspace): Promise<Array<Video>>;
-    saveItinerary(id: string, hook: string, days: Array<string>, cta: string): Promise<void>;
+    saveItinerary(id: string, hook: string, days: Array<string>, cta: string, writingPrompt: string): Promise<void>;
     schedulePost(videoId: string, workspace: Workspace, platforms: Array<Platform>, captions: Caption, scheduledTime: Time): Promise<void>;
     uploadVideo(workspace: Workspace, id: string, file: ExternalBlob, caption: string, thumbnail: ExternalBlob | null): Promise<string>;
 }
@@ -323,17 +324,17 @@ export class Backend implements backendInterface {
             return from_candid_vec_n16(this._uploadFile, this._downloadFile, result);
         }
     }
-    async saveItinerary(arg0: string, arg1: string, arg2: Array<string>, arg3: string): Promise<void> {
+    async saveItinerary(arg0: string, arg1: string, arg2: Array<string>, arg3: string, arg4: string): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.saveItinerary(arg0, arg1, arg2, arg3);
+                const result = await this.actor.saveItinerary(arg0, arg1, arg2, arg3, arg4);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.saveItinerary(arg0, arg1, arg2, arg3);
+            const result = await this.actor.saveItinerary(arg0, arg1, arg2, arg3, arg4);
             return result;
         }
     }

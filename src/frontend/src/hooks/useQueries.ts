@@ -164,14 +164,16 @@ export function useSaveItinerary() {
       hook,
       days,
       cta,
+      writingPrompt,
     }: {
       id: string;
       hook: string;
       days: string[];
       cta: string;
+      writingPrompt: string;
     }) => {
       if (!actor) throw new Error('Actor not initialized');
-      await actor.saveItinerary(id, hook, days, cta);
+      await actor.saveItinerary(id, hook, days, cta, writingPrompt);
     },
     onSuccess: () => {
       toast.success('Itinerary saved!');

@@ -2,13 +2,16 @@ import { useState } from 'react';
 import { useWorkspace } from '../contexts/WorkspaceContext';
 import { useVideos } from '../hooks/useQueries';
 import { Video } from '../backend';
-import { Loader2, Sparkles, Copy, Check } from 'lucide-react';
+import { Loader2, Sparkles, Copy, Check, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
 import { toast } from 'sonner';
 import { generateItineraryScript } from '../utils/itineraryGenerator';
+import TextOverlaySettings, { TextOverlayConfig } from './TextOverlaySettings';
+import { useVideoProcessor } from '../hooks/useVideoProcessor';
 
 interface GeneratedItinerary {
   hook: string;
@@ -23,18 +26,31 @@ export default function ScriptLab() {
   const [generatedItinerary, setGeneratedItinerary] = useState<GeneratedItinerary | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [customPrompt, setCustomPrompt] = useState('');
 
   // Editable state
   const [editedHook, setEditedHook] = useState('');
   const [editedDays, setEditedDays] = useState<string[]>([]);
   const [editedCta, setEditedCta] = useState('');
 
+  // Text overlay settings
+  const [overlaySettings, setOverlaySettings] = useState<TextOverlayConfig>({
+    font: 'Arial',
+    color: '#FFFFFF',
+    position: 'bottom',
+  });
+
+  // Video processor
+  const { processVideo, isProcessing, progress } = useVideoProcessor();
+
   const handleGenerateScript = async () => {
     if (!selectedVideo) return;
 
     setIsGenerating(true);
     try {
-      const itinerary = await generateItineraryScript(selectedVideo.caption);
+      const itinerary = await generateItineraryScript(
+        customPrompt || selectedVideo.caption
+      );
       setGeneratedItinerary(itinerary);
       
       // Initialize editable state
@@ -71,6 +87,36 @@ export default function ScriptLab() {
     const newDays = [...editedDays];
     newDays[index] = value;
     setEditedDays(newDays);
+  };
+
+  const handleExportWithCaptions = async () => {
+    if (!selectedVideo || !generatedItinerary) return;
+
+    try {
+      // Format the full script text (shortened for overlay)
+      const fullScript = `${editedHook}`;
+
+      toast.info('Processing video with captions...');
+
+      // Process the video
+      const videoUrl = selectedVideo.file.getDirectURL();
+      const processedBlob = await processVideo(videoUrl, fullScript, overlaySettings);
+
+      // Create download link
+      const url = URL.createObjectURL(processedBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${selectedVideo.caption.substring(0, 30)}_captioned.webm`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      toast.success('Video exported successfully!');
+    } catch (error) {
+      console.error('Export error:', error);
+      toast.error('Failed to export video with captions');
+    }
   };
 
   if (isLoading) {
@@ -132,21 +178,38 @@ export default function ScriptLab() {
             )}
           </div>
 
+          {/* Custom Prompt Input */}
+          {selectedVideo && (
+            <div>
+              <Label htmlFor="script-prompt" className="text-base font-semibold mb-2 block">
+                Custom Writing Prompt (optional)
+              </Label>
+              <Textarea
+                id="script-prompt"
+                value={customPrompt}
+                onChange={(e) => setCustomPrompt(e.target.value)}
+                placeholder="E.g., write a 3-day Tokyo itinerary focused on food, create a script about adventure activities, etc."
+                rows={3}
+                className="resize-none"
+              />
+            </div>
+          )}
+
           {/* Generate Button */}
           <Button
             onClick={handleGenerateScript}
             disabled={!selectedVideo || isGenerating}
-            className="w-full"
+            className="w-full gap-2"
             size="lg"
           >
             {isGenerating ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="w-5 h-5 animate-spin" />
                 Generating Script...
               </>
             ) : (
               <>
-                <Sparkles className="w-4 h-4 mr-2" />
+                <Sparkles className="w-5 h-5" />
                 Generate Itinerary Script
               </>
             )}
@@ -156,84 +219,127 @@ export default function ScriptLab() {
 
       {/* Generated Script Display */}
       {generatedItinerary && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Generated Itinerary Script</CardTitle>
-            <CardDescription>
-              Edit any section below to refine your script
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Hook Section */}
-            <div className="space-y-2">
-              <Label htmlFor="hook" className="text-base font-semibold">
-                Hook <span className="text-xs text-muted-foreground font-normal">(3-second visual overlay)</span>
-              </Label>
-              <Textarea
-                id="hook"
-                value={editedHook}
-                onChange={(e) => setEditedHook(e.target.value)}
-                className="min-h-[80px] resize-none"
-                placeholder="Enter hook text..."
-              />
-            </div>
+        <>
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>Generated Script</CardTitle>
+                <Button
+                  onClick={handleCopyScript}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4" />
+                      Copy Script
+                    </>
+                  )}
+                </Button>
+              </div>
+              <CardDescription>
+                Edit the script below and copy it for your video
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Hook Section */}
+              <div>
+                <Label htmlFor="hook" className="text-base font-semibold mb-2 block">
+                  Hook (3-second overlay)
+                </Label>
+                <Textarea
+                  id="hook"
+                  value={editedHook}
+                  onChange={(e) => setEditedHook(e.target.value)}
+                  rows={2}
+                  className="resize-none font-medium"
+                />
+              </div>
 
-            {/* Body Section - 3 Days */}
-            <div className="space-y-4">
-              <Label className="text-base font-semibold">
-                Body <span className="text-xs text-muted-foreground font-normal">(3-day itinerary)</span>
-              </Label>
-              {editedDays.map((day, index) => (
-                <div key={index} className="space-y-2">
-                  <Label htmlFor={`day-${index}`} className="text-sm">
-                    Day {index + 1}
-                  </Label>
-                  <Textarea
-                    id={`day-${index}`}
-                    value={day}
-                    onChange={(e) => handleDayChange(index, e.target.value)}
-                    className="min-h-[100px] resize-none"
-                    placeholder={`Enter Day ${index + 1} itinerary...`}
-                  />
+              {/* Days Section */}
+              <div>
+                <Label className="text-base font-semibold mb-3 block">
+                  Body (3-Day Itinerary)
+                </Label>
+                <div className="space-y-4">
+                  {editedDays.map((day, index) => (
+                    <div key={index}>
+                      <Label htmlFor={`day-${index}`} className="mb-2 block">
+                        Day {index + 1}
+                      </Label>
+                      <Textarea
+                        id={`day-${index}`}
+                        value={day}
+                        onChange={(e) => handleDayChange(index, e.target.value)}
+                        rows={4}
+                        className="resize-none"
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
 
-            {/* CTA Section */}
-            <div className="space-y-2">
-              <Label htmlFor="cta" className="text-base font-semibold">
-                CTA <span className="text-xs text-muted-foreground font-normal">(Save for later prompt)</span>
-              </Label>
-              <Textarea
-                id="cta"
-                value={editedCta}
-                onChange={(e) => setEditedCta(e.target.value)}
-                className="min-h-[80px] resize-none"
-                placeholder="Enter call-to-action..."
-              />
-            </div>
+              {/* CTA Section */}
+              <div>
+                <Label htmlFor="cta" className="text-base font-semibold mb-2 block">
+                  CTA (Call to Action)
+                </Label>
+                <Textarea
+                  id="cta"
+                  value={editedCta}
+                  onChange={(e) => setEditedCta(e.target.value)}
+                  rows={2}
+                  className="resize-none"
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-            {/* Copy Button */}
-            <Button
-              onClick={handleCopyScript}
-              variant="outline"
-              className="w-full"
-              size="lg"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-4 h-4 mr-2" />
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4 mr-2" />
-                  Copy Script
-                </>
+          {/* Text Overlay Settings */}
+          <TextOverlaySettings settings={overlaySettings} onChange={setOverlaySettings} />
+
+          {/* Export Button */}
+          <Card>
+            <CardContent className="pt-6">
+              {isProcessing && (
+                <div className="mb-4 space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">{progress.message}</span>
+                    <span className="font-medium">{progress.percentage}%</span>
+                  </div>
+                  <Progress value={progress.percentage} className="h-2" />
+                </div>
               )}
-            </Button>
-          </CardContent>
-        </Card>
+              <Button
+                onClick={handleExportWithCaptions}
+                disabled={!selectedVideo || isProcessing}
+                className="w-full gap-2"
+                size="lg"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-5 h-5" />
+                    Export with Captions
+                  </>
+                )}
+              </Button>
+              <p className="text-xs text-muted-foreground text-center mt-2">
+                This will download a new video with your hook text burned into it
+              </p>
+            </CardContent>
+          </Card>
+        </>
       )}
     </div>
   );

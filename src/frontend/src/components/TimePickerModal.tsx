@@ -45,7 +45,7 @@ export default function TimePickerModal({ open, onClose, date, videoId, workspac
     if (!video) return;
     setIsGenerating(true);
     try {
-      const generated = await generateCaptions(video.caption || '');
+      const generated = await generateCaptions(video.caption || '', workspace);
       setCaptions(generated);
     } catch (error) {
       console.error('Failed to generate captions:', error);
@@ -111,7 +111,7 @@ export default function TimePickerModal({ open, onClose, date, videoId, workspac
 
         <div className="space-y-4">
           <div className="bg-muted/50 border border-border rounded-lg p-3 text-sm text-muted-foreground">
-            <strong className="text-foreground">Note:</strong> Scheduling is for planning only. You'll need to manually copy and post captions at the scheduled time.
+            <strong className="text-foreground">Note:</strong> Scheduling is for planning only. You will need to manually copy and post captions at the scheduled time.
           </div>
 
           <div>

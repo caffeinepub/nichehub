@@ -8,6 +8,8 @@ import List "mo:core/List";
 import Iter "mo:core/Iter";
 import Debug "mo:core/Debug";
 
+
+
 actor {
   include MixinStorage();
 
@@ -49,6 +51,7 @@ actor {
     hook : Text;
     days : [Text];
     cta : Text;
+    writingPrompt : Text;
   };
 
   let videos = Map.empty<Text, Video>();
@@ -101,13 +104,20 @@ actor {
     filteredPosts;
   };
 
-  // Persist Travel Itinerary
-  public shared ({ caller }) func saveItinerary(id : Text, hook : Text, days : [Text], cta : Text) : async () {
+  // Persist Travel Itinerary with writing prompt
+  public shared ({ caller }) func saveItinerary(
+    id : Text,
+    hook : Text,
+    days : [Text],
+    cta : Text,
+    writingPrompt : Text,
+  ) : async () {
     let itinerary : Itinerary = {
       id;
       hook;
       days;
       cta;
+      writingPrompt;
     };
     itineraries.add(id, itinerary);
   };
@@ -134,3 +144,4 @@ actor {
     };
   };
 };
+

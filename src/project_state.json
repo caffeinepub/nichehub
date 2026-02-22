@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 17,
+  "projectStateVersion": 21,
   "summary": "NicheHub: A mobile content management and social media scheduling app that allows users to manage two niche workspaces (Travel and AI Learning), repurpose video content with AI-generated captions for multiple platforms, and schedule posts via a visual calendar. The app uses Internet Identity for authentication and provides a manual export workflow where users can generate optimized captions and prepare content for Facebook, TikTok, and Instagram, then copy/paste to each platform's native app.",
   "architectural_notes": [
     "Mobile-first responsive design optimized for on-the-go use",
@@ -16,9 +16,10 @@
   ],
   "known_issues": [
     "Video upload functionality is not working",
-    "Login to Upload button shows 'login failed user already authenticated' error when clicked by authenticated users"
+    "Login to Upload button shows 'login failed user already authenticated' error when clicked by authenticated users",
+    "Video preview functionality not working when selecting videos in the media gallery"
   ],
-  "isFixRequest": true,
+  "isFixRequest": false,
   "existing_features": [
     {
       "id": "feature-create-a-workspace-toggle-component-at-the-top-of-the-interface-that-allows-switching-between-travel-and-ai-learning-workspaces-the-selected-workspace-should-persist-across-sessions-and-determine-which-media-folder-is-displayed",
@@ -267,6 +268,78 @@
         "REQ-35"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-create-an-ai-writing-assistant-feature-that-allows-users-to-input-custom-text-prompts-and-receive-ai-generated-content-add-a-text-input-field-and-generate-button-in-the-repurposemodal-that-accepts-user-instructions-like-write-about-and-generates-captions-based-on-those-instructions-instead-of-only-using-the-video-caption",
+      "title": "Create an AI writing assistant feature that allows users to input custom text prompts and receive AI-generated content. Add a text input field and 'Generate' button in the RepurposeModal that accepts user instructions like 'write about...' and generates captions based on those instructions instead of only using the video caption",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-ai-writing-assistant-feature-in-the-scriptlab-component-that-allows-users-to-input-custom-text-prompts-before-generating-itinerary-scripts-add-a-text-input-field-where-users-can-specify-what-they-want-the-ai-to-write-about-and-pass-this-prompt-to-the-itinerary-generation-function",
+      "title": "Create an AI writing assistant feature in the ScriptLab component that allows users to input custom text prompts before generating itinerary scripts. Add a text input field where users can specify what they want the AI to write about, and pass this prompt to the itinerary generation function",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-itinerarygenerator-utility-to-use-a-travel-expert-persona-that-is-cinematic-and-helpful-avoiding-generic-or-bland-language-the-generated-scripts-should-feel-engaging-enthusiastic-and-professionally-crafted-for-travel-content-creators-replace-the-current-tone-with-vivid-story-driven-language-that-sounds-like-an-experienced-travel-cinematographer-sharing-insider-tips",
+      "title": "Update the itineraryGenerator utility to use a 'Travel Expert' persona that is cinematic and helpful, avoiding generic or bland language. The generated scripts should feel engaging, enthusiastic, and professionally crafted for travel content creators. Replace the current tone with vivid, story-driven language that sounds like an experienced travel cinematographer sharing insider tips",
+      "reqIds": [
+        "REQ-39"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-captiongenerator-utility-to-use-a-travel-expert-persona-for-the-travel-workspace-that-is-cinematic-and-helpful-avoiding-generic-language-when-generating-captions-for-travel-videos-use-vivid-story-driven-language-with-insider-tips-and-engaging-descriptions-that-sound-professionally-crafted",
+      "title": "Update the captionGenerator utility to use a 'Travel Expert' persona for the Travel workspace that is cinematic and helpful, avoiding generic language. When generating captions for travel videos, use vivid, story-driven language with insider tips and engaging descriptions that sound professionally crafted",
+      "reqIds": [
+        "REQ-40"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-integrate-a-video-processing-library-ffmpeg-wasm-or-html5-canvas-overlay-system-into-the-frontend-to-enable-burning-generated-script-text-directly-onto-video-files-as-a-permanent-layer",
+      "title": "Integrate a video processing library (ffmpeg.wasm or HTML5 Canvas overlay system) into the frontend to enable burning generated script text directly onto video files as a permanent layer",
+      "reqIds": [
+        "REQ-41"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-text-overlay-customization-controls-in-the-scriptlab-component-that-allow-users-to-select-font-color-and-position-top-center-bottom-after-an-itinerary-script-is-generated",
+      "title": "Add text overlay customization controls in the ScriptLab component that allow users to select Font, Color, and Position (Top, Center, Bottom) after an itinerary script is generated",
+      "reqIds": [
+        "REQ-42"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-export-with-captions-button-in-the-scriptlab-component-that-renders-a-new-video-version-with-the-ai-generated-script-text-permanently-overlaid-using-the-selected-font-color-and-position-settings-and-provides-a-download-link-for-the-processed-video-file",
+      "title": "Add an 'Export with Captions' button in the ScriptLab component that renders a new video version with the AI-generated script text permanently overlaid using the selected font, color, and position settings, and provides a download link for the processed video file",
+      "reqIds": [
+        "REQ-43"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-text-overlay-customization-controls-in-the-repurposemodal-component-that-allow-users-to-select-font-color-and-position-top-center-bottom-after-ai-captions-are-generated-for-facebook-instagram-and-tiktok",
+      "title": "Add text overlay customization controls in the RepurposeModal component that allow users to select Font, Color, and Position (Top, Center, Bottom) after AI captions are generated for Facebook, Instagram, and TikTok",
+      "reqIds": [
+        "REQ-44"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-export-with-captions-button-in-the-repurposemodal-component-that-renders-a-new-video-version-with-the-platform-specific-ai-generated-caption-text-permanently-overlaid-using-the-selected-font-color-and-position-settings-and-provides-a-download-link-for-the-processed-video-file",
+      "title": "Add an 'Export with Captions' button in the RepurposeModal component that renders a new video version with the platform-specific AI-generated caption text permanently overlaid using the selected font, color, and position settings, and provides a download link for the processed video file",
+      "reqIds": [
+        "REQ-45"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -348,6 +421,44 @@
       "reqIds": [
         "REQ-30"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-23",
+      "summary": "Fix video preview functionality when selecting a video in the media gallery",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-24",
+      "summary": "Add AI writing assistant feature that allows users to input custom prompts and receive AI-generated content based on their specific instructions",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-25",
+      "summary": "Fix the video preview functionality in the MediaLibrary component so that when a user clicks on a VideoCard, the VideoPlayerModal opens and displays the selected video with playback controls",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-26",
+      "summary": "Integrate a video processing library (ffmpeg.wasm or HTML5 Canvas overlay) to burn generated script text directly onto videos as a permanent layer",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-27",
+      "summary": "Add text overlay customization settings: Font, Color, and Position (Top, Center, Bottom) selection after script generation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-28",
+      "summary": "Add 'Export with Captions' button that renders a new video version with AI script permanently overlaid, downloadable for direct social media posting",
+      "reqIds": [],
       "status": "pending"
     }
   ],
