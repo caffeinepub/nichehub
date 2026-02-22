@@ -1,0 +1,22 @@
+{
+  "frontend/src/App.tsx": "Main application component that wraps the app with ThemeProvider and WorkspaceProvider, renders the workspace toggle, and displays tabbed navigation between Media Library and Schedule Calendar views.",
+  "frontend/src/contexts/WorkspaceContext.tsx": "React context provider that manages the active workspace state (Travel or AI Learning) with localStorage persistence for session continuity.",
+  "frontend/src/components/Layout.tsx": "Application layout with header containing branding, login/logout buttons, help icon, main content area, and footer with social icons and Caffeine.ai attribution.",
+  "frontend/src/components/WorkspaceToggle.tsx": "Toggle component at the top of the interface allowing users to switch between Travel and AI Learning workspaces with visual icons.",
+  "frontend/src/components/MediaLibrary.tsx": "Displays uploaded videos in a grid layout for the active workspace with upload interface and repurpose functionality.",
+  "frontend/src/components/VideoUpload.tsx": "Video upload component with authentication check, disabled state for non-authenticated users, file input, progress tracking, and login prompt.",
+  "frontend/src/components/VideoCard.tsx": "Individual video card component displaying thumbnail/video preview, caption, and Repurpose button with drag-and-drop support for calendar scheduling.",
+  "frontend/src/components/RepurposeModal.tsx": "Modal dialog for AI caption generation with editable platform-specific captions, Copy Captions button for clipboard export, and Schedule button with authentication check.",
+  "frontend/src/components/PostNowButton.tsx": "Button component that immediately publishes video content to selected social platforms with loading states and per-platform success/error feedback.",
+  "frontend/src/components/ScheduleButton.tsx": "Button component that opens date/time picker modal to schedule posts with explanatory toast message about manual posting requirement.",
+  "frontend/src/components/DateTimePickerModal.tsx": "Modal with calendar and time input for selecting when to schedule a post with validation for future dates.",
+  "frontend/src/components/Calendar.tsx": "Monthly calendar view displaying scheduled posts with drag-and-drop support for scheduling videos by dropping them onto specific dates.",
+  "frontend/src/components/ScheduledPostItem.tsx": "Scheduled post display component showing thumbnail, time, platform icons, and Copy Captions button with tooltip explaining manual posting workflow.",
+  "frontend/src/components/TimePickerModal.tsx": "Modal triggered by calendar drag-and-drop with time selection, platform selection, caption generation, and explanatory note about manual posting workflow.",
+  "frontend/src/hooks/useQueries.ts": "Custom React Query hooks for fetching videos and scheduled posts by workspace, uploading videos with progress tracking using proper ArrayBuffer type creation, and scheduling posts with automatic cache invalidation.",
+  "frontend/src/utils/captionGenerator.ts": "Utility function that generates platform-optimized captions (Facebook conversational, Instagram hashtag-heavy, TikTok trend-focused) with simulated AI delay.",
+  "frontend/src/utils/socialPlatformPublisher.ts": "Utility function simulating social media API calls for publishing content to Facebook, Instagram, and TikTok with success/error results.",
+  "frontend/src/index.css": "Global styles with dark theme OKLCH color system, touch-friendly minimum sizes (44px), smooth scrolling, and mobile-optimized typography.",
+  "frontend/tailwind.config.js": "Tailwind configuration with dark theme colors using purple accent (280 hue), mobile-first container padding, and extended utilities for the minimalist dark design.",
+  "frontend/src/components/HelpModal.tsx": "Help modal explaining the manual export workflow with step-by-step instructions for uploading, generating captions, scheduling, and manually posting content."
+}

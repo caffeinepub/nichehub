@@ -1,0 +1,126 @@
+{
+  "kind": "build_request",
+  "title": "Rebuild with realistic manual export workflow",
+  "projectName": "NicheHub",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-11",
+      "text": "Remove the 'Post Now' button functionality that simulates direct posting to social media platforms (Facebook, Instagram, TikTok). Replace it with a 'Copy Captions' button that copies all generated captions to the clipboard in a formatted structure showing platform names and their respective captions.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "The platform doesn't support direct social media API integrations",
+          "Manual Export Workflow - Generate optimized captions and prepare content, then you copy/paste to each platform's native app"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The 'Post Now' button is removed from the RepurposeModal component",
+        "A 'Copy Captions' button is added that copies formatted caption text to clipboard",
+        "Copied text includes platform labels (Facebook, Instagram, TikTok) with their respective captions",
+        "A success toast notification appears when captions are copied",
+        "The button is styled consistently with the app's dark theme design"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Update the scheduled posts workflow to clarify that scheduling is for content planning only, not automated posting. Add UI indicators showing that users need to manually post content at the scheduled time. When viewing scheduled posts on the calendar, provide a 'Copy Captions' action for each scheduled item.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "Manual Export Workflow - Generate optimized captions and prepare content, then you copy/paste to each platform's native app"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Calendar scheduled post items display a clear indicator that posting is manual",
+        "Each scheduled post includes a 'Copy Captions' button or action",
+        "Clicking the copy action copies the scheduled post's captions in a formatted structure",
+        "A tooltip or help text explains that scheduling is for planning purposes and manual posting is required",
+        "The Schedule button modal includes explanatory text about the manual posting workflow"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Remove the socialPlatformPublisher utility and all references to simulated platform publishing. Clean up any success/error handling logic related to fake API responses for social media posting.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "The platform doesn't support direct social media API integrations"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The frontend/src/utils/socialPlatformPublisher.ts file is removed",
+        "All imports and calls to socialPlatformPublisher are removed from components",
+        "No toast notifications reference successful or failed platform posting",
+        "The codebase contains no simulated API response logic for social media platforms"
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Add Internet Identity authentication to the application. Implement a login/logout flow using the existing useInternetIdentity hook. Show the user's authentication status in the header and require authentication before allowing video uploads or content management actions.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "Internet Identity Authentication - The only supported login method, using passkeys/biometrics"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A login button appears in the Layout header when the user is not authenticated",
+        "Clicking the login button triggers Internet Identity authentication flow",
+        "After successful login, the header shows a logout button",
+        "Video upload functionality is disabled when the user is not authenticated",
+        "Repurpose and scheduling features require authentication to function",
+        "Authentication state persists across page refreshes"
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Add informational text or a help section explaining the manual export workflow. Clarify that NicheHub generates AI-optimized captions and helps with content planning, but users must manually copy captions and post content to each platform's native app at the scheduled time.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "Manual Export Workflow - Generate optimized captions and prepare content, then you copy/paste to each platform's native app"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A help or info section is added to the Layout or as a modal",
+        "The help text clearly explains that posting is manual",
+        "Instructions describe the workflow: generate captions → schedule → copy → paste to native apps",
+        "The help section is easily accessible from the main interface",
+        "Text is concise and uses clear, user-friendly language"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not change the backend schema or main.mo actor structure",
+    "Preserve the existing workspace toggle, video upload, and calendar scheduling functionality",
+    "Do not modify files in frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, or frontend/src/main.tsx",
+    "Maintain the dark-themed minimalist design throughout all UI changes"
+  ],
+  "nonGoals": [
+    "Adding actual social media API integrations",
+    "Implementing automated posting functionality",
+    "Adding third-party OAuth providers beyond Internet Identity",
+    "Creating real-time platform synchronization",
+    "Implementing SMS or email notifications for scheduled posts"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "NicheHub: A mobile content management and social media scheduling app that allows users to manage two niche workspaces (Travel and AI Learning), repurpose video content with AI-generated captions for multiple platforms, and schedule posts via a visual calendar. The app uses Internet Identity for authentication and provides a manual export workflow where users can generate optimized captions and prepare content for Facebook, TikTok, and Instagram, then copy/paste to each platform's native app.",
+  "architectural_notes": [
+    "Mobile-first responsive design optimized for on-the-go use",
+    "Dark theme with minimalist, modern UI",
+    "Multi-workspace architecture supporting separate media libraries per niche",
+    "AI service integration for caption generation (platform-specific)",
+    "Calendar-based scheduling system with drag-and-drop functionality",
+    "Media upload and storage system with workspace isolation",
+    "Internet Identity authentication system using passkeys/biometrics (no third-party OAuth)",
+    "Manual export workflow: users copy/paste generated captions to native social media apps",
+    "No direct social media API integrations (Facebook, TikTok, Instagram posting APIs not supported)"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-workspace-toggle-component-at-the-top-of-the-interface-that-allows-switching-between-travel-and-ai-learning-workspaces-the-selected-workspace-should-persist-across-sessions-and-determine-which-media-folder-is-displayed",
+      "title": "Create a workspace toggle component at the top of the interface that allows switching between 'Travel' and 'AI Learning' workspaces. The selected workspace should persist across sessions and determine which media folder is displayed.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-video-upload-interface-that-accepts-video-files-and-stores-them-in-the-active-workspace-s-media-folder-display-uploaded-videos-in-a-library-view-with-thumbnails",
+      "title": "Create a video upload interface that accepts video files and stores them in the active workspace's media folder. Display uploaded videos in a library view with thumbnails.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-repurpose-button-to-each-video-in-the-library-that-triggers-ai-caption-generation-for-facebook-instagram-and-tiktok-display-the-three-generated-captions-in-an-editable-format-with-platform-labels",
+      "title": "Add a 'Repurpose' button to each video in the library that triggers AI caption generation for Facebook, Instagram, and TikTok. Display the three generated captions in an editable format with platform labels.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-visual-calendar-component-that-displays-all-scheduled-posts-with-date-and-time-information-the-calendar-should-show-posts-as-items-on-their-scheduled-dates",
+      "title": "Implement a visual calendar component that displays all scheduled posts with date and time information. The calendar should show posts as items on their scheduled dates.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enable-drag-and-drop-functionality-so-users-can-drag-videos-from-the-media-library-and-drop-them-onto-specific-dates-and-times-in-the-calendar-to-schedule-posts-opening-a-time-slot-should-allow-selecting-hour-and-minute",
+      "title": "Enable drag-and-drop functionality so users can drag videos from the media library and drop them onto specific dates and times in the calendar to schedule posts. Opening a time slot should allow selecting hour and minute.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-post-now-button-that-immediately-publishes-the-selected-video-with-its-captions-to-all-selected-social-platforms-facebook-instagram-tiktok-display-success-or-error-feedback-for-each-platform",
+      "title": "Create a 'Post Now' button that immediately publishes the selected video with its captions to all selected social platforms (Facebook, Instagram, TikTok). Display success or error feedback for each platform.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-schedule-button-that-saves-the-video-captions-selected-platforms-and-chosen-date-time-as-a-scheduled-post-the-scheduled-post-should-appear-on-the-calendar",
+      "title": "Create a 'Schedule' button that saves the video, captions, selected platforms, and chosen date/time as a scheduled post. The scheduled post should appear on the calendar.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-modern-minimalist-dark-themed-design-throughout-the-application-with-high-contrast-for-readability-optimize-all-ui-components-for-mobile-screen-sizes-and-touch-interactions",
+      "title": "Apply a modern, minimalist, dark-themed design throughout the application with high contrast for readability. Optimize all UI components for mobile screen sizes and touch interactions.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-post-now-button-functionality-that-simulates-direct-posting-to-social-media-platforms-facebook-instagram-tiktok-replace-it-with-a-copy-captions-button-that-copies-all-generated-captions-to-the-clipboard-in-a-formatted-structure-showing-platform-names-and-their-respective-captions",
+      "title": "Remove the 'Post Now' button functionality that simulates direct posting to social media platforms (Facebook, Instagram, TikTok). Replace it with a 'Copy Captions' button that copies all generated captions to the clipboard in a formatted structure showing platform names and their respective captions.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-scheduled-posts-workflow-to-clarify-that-scheduling-is-for-content-planning-only-not-automated-posting-add-ui-indicators-showing-that-users-need-to-manually-post-content-at-the-scheduled-time-when-viewing-scheduled-posts-on-the-calendar-provide-a-copy-captions-action-for-each-scheduled-item",
+      "title": "Update the scheduled posts workflow to clarify that scheduling is for content planning only, not automated posting. Add UI indicators showing that users need to manually post content at the scheduled time. When viewing scheduled posts on the calendar, provide a 'Copy Captions' action for each scheduled item.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-socialplatformpublisher-utility-and-all-references-to-simulated-platform-publishing-clean-up-any-success-error-handling-logic-related-to-fake-api-responses-for-social-media-posting",
+      "title": "Remove the socialPlatformPublisher utility and all references to simulated platform publishing. Clean up any success/error handling logic related to fake API responses for social media posting.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-internet-identity-authentication-to-the-application-implement-a-login-logout-flow-using-the-existing-useinternetidentity-hook-show-the-user-s-authentication-status-in-the-header-and-require-authentication-before-allowing-video-uploads-or-content-management-actions",
+      "title": "Add Internet Identity authentication to the application. Implement a login/logout flow using the existing useInternetIdentity hook. Show the user's authentication status in the header and require authentication before allowing video uploads or content management actions.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-informational-text-or-a-help-section-explaining-the-manual-export-workflow-clarify-that-nichehub-generates-ai-optimized-captions-and-helps-with-content-planning-but-users-must-manually-copy-captions-and-post-content-to-each-platform-s-native-app-at-the-scheduled-time",
+      "title": "Add informational text or a help section explaining the manual export workflow. Clarify that NicheHub generates AI-optimized captions and helps with content planning, but users must manually copy captions and post content to each platform's native app at the scheduled time.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Dual workspace toggle for Travel and AI Learning niches with separate media folders",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "AI-powered Repurpose Engine to generate platform-specific captions for Facebook, Instagram, and TikTok",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Visual calendar with drag-and-drop scheduling for video posts",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Implement separate media folder storage in the backend for each workspace ('Travel' and 'AI Learning'). Each uploaded video must be associated with the active workspace and retrievable by workspace identifier.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Implement backend storage for scheduled posts including video reference, scheduled date/time, platform selections (Facebook, Instagram, TikTok), captions, and workspace association.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Implement Internet Identity authentication using passkeys/biometrics",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Create manual export workflow for generated captions and prepared content (copy/paste to native platform apps)",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "NicheHub",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

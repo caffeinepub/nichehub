@@ -1,0 +1,22 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-22T00:33:30.238Z",
+  "summary": "The diff implements all five requirements (REQ-11 through REQ-15) related to rebuilding the app with a realistic manual export workflow. The 'Post Now' button is replaced with 'Copy Captions', scheduling workflow is clarified as manual-only, the socialPlatformPublisher utility is removed, Internet Identity authentication is integrated, and a help modal explains the manual workflow. All acceptance criteria appear to be met.",
+  "missing_requirements": [],
+  "hallucinated_features": [],
+  "confidence": 0.95,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/components/HelpModal.tsx",
+    "frontend/src/components/Layout.tsx",
+    "frontend/src/components/PostNowButton.tsx",
+    "frontend/src/components/RepurposeModal.tsx",
+    "frontend/src/components/ScheduleButton.tsx",
+    "frontend/src/components/ScheduledPostItem.tsx",
+    "frontend/src/components/TimePickerModal.tsx",
+    "frontend/src/components/VideoUpload.tsx",
+    "frontend/src/utils/socialPlatformPublisher.ts",
+    "project_state.json"
+  ]
+}

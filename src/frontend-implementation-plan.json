@@ -1,0 +1,127 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Rebuild with realistic manual export workflow",
+  "requirements": [
+    {
+      "id": "REQ-11",
+      "summary": "Replace 'Post Now' button with 'Copy Captions' functionality that copies all generated captions to clipboard in a formatted structure",
+      "acceptanceCriteria": [
+        "The 'Post Now' button is removed from the RepurposeModal component",
+        "A 'Copy Captions' button is added that copies formatted caption text to clipboard",
+        "Copied text includes platform labels (Facebook, Instagram, TikTok) with their respective captions",
+        "A success toast notification appears when captions are copied",
+        "The button is styled consistently with the app's dark theme design"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/RepurposeModal.tsx",
+          "operation": "modify",
+          "description": "Remove the PostNowButton component and its import. Add a 'Copy Captions' button that formats all platform captions into a clipboard-friendly structure with platform labels. Implement clipboard API to copy the formatted text and show a success toast notification. Style the button consistently with the dark theme using existing shadcn/ui button variants."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Update scheduled posts workflow to clarify manual posting requirements and add 'Copy Captions' action for calendar items",
+      "acceptanceCriteria": [
+        "Calendar scheduled post items display a clear indicator that posting is manual",
+        "Each scheduled post includes a 'Copy Captions' button or action",
+        "Clicking the copy action copies the scheduled post's captions in a formatted structure",
+        "A tooltip or help text explains that scheduling is for planning purposes and manual posting is required",
+        "The Schedule button modal includes explanatory text about the manual posting workflow"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ScheduledPostItem.tsx",
+          "operation": "modify",
+          "description": "Add a 'Copy Captions' button to each scheduled post item. Implement clipboard copying for the post's captions in a formatted structure with platform labels. Add a visual indicator or badge showing that manual posting is required. Include a tooltip explaining the manual workflow. Show a success toast when captions are copied."
+        },
+        {
+          "path": "frontend/src/components/ScheduleButton.tsx",
+          "operation": "modify",
+          "description": "Add explanatory text to the ScheduleButton modal clarifying that scheduling is for content planning only and that users must manually post content at the scheduled time. Keep the text concise and position it prominently in the modal interface."
+        },
+        {
+          "path": "frontend/src/components/TimePickerModal.tsx",
+          "operation": "modify",
+          "description": "Add explanatory text to the TimePickerModal clarifying that scheduling is for planning purposes and manual posting is required at the scheduled time. Position the help text near the scheduling action to ensure visibility."
+        }
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "summary": "Remove socialPlatformPublisher utility and all references to simulated platform publishing",
+      "acceptanceCriteria": [
+        "The frontend/src/utils/socialPlatformPublisher.ts file is removed",
+        "All imports and calls to socialPlatformPublisher are removed from components",
+        "No toast notifications reference successful or failed platform posting",
+        "The codebase contains no simulated API response logic for social media platforms"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/socialPlatformPublisher.ts",
+          "operation": "delete",
+          "description": "Delete the socialPlatformPublisher utility file that simulates posting to social media platforms."
+        },
+        {
+          "path": "frontend/src/components/PostNowButton.tsx",
+          "operation": "delete",
+          "description": "Delete the PostNowButton component that uses the socialPlatformPublisher to simulate direct posting functionality."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Add Internet Identity authentication with login/logout flow and require authentication for video uploads and content management",
+      "acceptanceCriteria": [
+        "A login button appears in the Layout header when the user is not authenticated",
+        "Clicking the login button triggers Internet Identity authentication flow",
+        "After successful login, the header shows a logout button",
+        "Video upload functionality is disabled when the user is not authenticated",
+        "Repurpose and scheduling features require authentication to function",
+        "Authentication state persists across page refreshes"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "modify",
+          "description": "Add authentication status display to the header using the useInternetIdentity hook. Show a login button when the user is not authenticated, and a logout button when authenticated. Wire the buttons to the login() and logout() methods from the hook. Style the buttons consistently with the dark theme design."
+        },
+        {
+          "path": "frontend/src/components/VideoUpload.tsx",
+          "operation": "modify",
+          "description": "Use the useInternetIdentity hook to check authentication status. Disable the video upload functionality when the user is not authenticated. Display a message prompting users to log in before uploading. Ensure the disabled state is visually clear in the UI."
+        },
+        {
+          "path": "frontend/src/components/RepurposeModal.tsx",
+          "operation": "modify",
+          "description": "Use the useInternetIdentity hook to check authentication status. Disable the repurpose and scheduling actions when the user is not authenticated. Add a user-friendly message explaining that authentication is required for these features."
+        }
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "summary": "Add help section explaining the manual export workflow for content planning and caption copying",
+      "acceptanceCriteria": [
+        "A help or info section is added to the Layout or as a modal",
+        "The help text clearly explains that posting is manual",
+        "Instructions describe the workflow: generate captions → schedule → copy → paste to native apps",
+        "The help section is easily accessible from the main interface",
+        "Text is concise and uses clear, user-friendly language"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/HelpModal.tsx",
+          "operation": "create",
+          "description": "Create a HelpModal component using shadcn/ui Dialog. Include concise, user-friendly text explaining that NicheHub generates AI-optimized captions and helps with content planning, but users must manually copy captions and post to each platform's native app at scheduled times. Describe the workflow: generate captions → schedule → copy → paste to native apps. Style the modal consistently with the dark theme."
+        },
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "modify",
+          "description": "Add a help button or info icon to the header that opens the HelpModal. Position it prominently so users can easily access workflow instructions. Wire the button to toggle the HelpModal visibility state."
+        }
+      ]
+    }
+  ]
+}

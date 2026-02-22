@@ -1,0 +1,106 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-remove-the-post-now-button-functionality-that-simulates-direct-posting-to-social-media-platforms-facebook-instagram-tiktok-replace-it-with-a-copy-captions-button-that-copies-all-generated-captions-to-the-clipboard-in-a-formatted-structure-showing-platform-names-and-their-respective-captions",
+      "featureTitle": "Remove the 'Post Now' button functionality that simulates direct posting to social media platforms (Facebook, Instagram, TikTok). Replace it with a 'Copy Captions' button that copies all generated captions to the clipboard in a formatted structure showing platform names and their respective captions.",
+      "files": [
+        "frontend/src/components/RepurposeModal.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-scheduled-posts-workflow-to-clarify-that-scheduling-is-for-content-planning-only-not-automated-posting-add-ui-indicators-showing-that-users-need-to-manually-post-content-at-the-scheduled-time-when-viewing-scheduled-posts-on-the-calendar-provide-a-copy-captions-action-for-each-scheduled-item",
+      "featureTitle": "Update the scheduled posts workflow to clarify that scheduling is for content planning only, not automated posting. Add UI indicators showing that users need to manually post content at the scheduled time. When viewing scheduled posts on the calendar, provide a 'Copy Captions' action for each scheduled item.",
+      "files": [
+        "frontend/src/components/ScheduleButton.tsx",
+        "frontend/src/components/ScheduledPostItem.tsx",
+        "frontend/src/components/TimePickerModal.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-remove-the-socialplatformpublisher-utility-and-all-references-to-simulated-platform-publishing-clean-up-any-success-error-handling-logic-related-to-fake-api-responses-for-social-media-posting",
+      "featureTitle": "Remove the socialPlatformPublisher utility and all references to simulated platform publishing. Clean up any success/error handling logic related to fake API responses for social media posting.",
+      "files": [
+        "frontend/src/components/PostNowButton.tsx",
+        "frontend/src/utils/socialPlatformPublisher.ts"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-internet-identity-authentication-to-the-application-implement-a-login-logout-flow-using-the-existing-useinternetidentity-hook-show-the-user-s-authentication-status-in-the-header-and-require-authentication-before-allowing-video-uploads-or-content-management-actions",
+      "featureTitle": "Add Internet Identity authentication to the application. Implement a login/logout flow using the existing useInternetIdentity hook. Show the user's authentication status in the header and require authentication before allowing video uploads or content management actions.",
+      "files": [
+        "frontend/src/components/Layout.tsx",
+        "frontend/src/components/RepurposeModal.tsx",
+        "frontend/src/components/VideoUpload.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-informational-text-or-a-help-section-explaining-the-manual-export-workflow-clarify-that-nichehub-generates-ai-optimized-captions-and-helps-with-content-planning-but-users-must-manually-copy-captions-and-post-content-to-each-platform-s-native-app-at-the-scheduled-time",
+      "featureTitle": "Add informational text or a help section explaining the manual export workflow. Clarify that NicheHub generates AI-optimized captions and helps with content planning, but users must manually copy captions and post content to each platform's native app at the scheduled time.",
+      "files": [
+        "frontend/src/components/HelpModal.tsx",
+        "frontend/src/components/Layout.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-15"
+      ],
+      "confidence": "high"
+    }
+  ]
+}
