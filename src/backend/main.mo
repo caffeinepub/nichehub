@@ -6,9 +6,7 @@ import Text "mo:core/Text";
 import Map "mo:core/Map";
 import List "mo:core/List";
 import Iter "mo:core/Iter";
-
-
-
+import Debug "mo:core/Debug";
 
 actor {
   include MixinStorage();
@@ -58,7 +56,7 @@ actor {
   let itineraries = Map.empty<Text, Itinerary>();
 
   // Upload a new video
-  public shared ({ caller }) func uploadVideo(workspace : Workspace, id : Text, file : Storage.ExternalBlob, caption : Text, thumbnail : ?Storage.ExternalBlob) : async () {
+  public shared ({ caller }) func uploadVideo(workspace : Workspace, id : Text, file : Storage.ExternalBlob, caption : Text, thumbnail : ?Storage.ExternalBlob) : async Text {
     let video : Video = {
       id;
       workspace;
@@ -67,6 +65,8 @@ actor {
       thumbnail;
     };
     videos.add(id, video);
+    Debug.print("Video uploaded successfully: " # caption);
+    caption;
   };
 
   // Get videos by workspace

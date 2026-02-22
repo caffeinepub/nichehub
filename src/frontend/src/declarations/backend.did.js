@@ -105,7 +105,7 @@ export const idlService = IDL.Service({
     ),
   'uploadVideo' : IDL.Func(
       [Workspace, IDL.Text, ExternalBlob, IDL.Text, IDL.Opt(ExternalBlob)],
-      [],
+      [IDL.Text],
       [],
     ),
 });
@@ -210,7 +210,7 @@ export const idlFactory = ({ IDL }) => {
       ),
     'uploadVideo' : IDL.Func(
         [Workspace, IDL.Text, ExternalBlob, IDL.Text, IDL.Opt(ExternalBlob)],
-        [],
+        [IDL.Text],
         [],
       ),
   });

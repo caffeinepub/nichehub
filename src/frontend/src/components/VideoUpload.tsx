@@ -17,54 +17,95 @@ export default function VideoUpload() {
   const { isLoginSuccess, login, isLoggingIn } = useInternetIdentity();
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('[VideoUpload] File input onChange fired');
     const file = e.target.files?.[0];
-    if (!file) return;
+    
+    if (!file) {
+      console.log('[VideoUpload] No file selected');
+      return;
+    }
+
+    console.log('[VideoUpload] File selected:', {
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      sizeInMB: (file.size / (1024 * 1024)).toFixed(2) + ' MB'
+    });
 
     if (!file.type.startsWith('video/')) {
+      console.error('[VideoUpload] Invalid file type:', file.type);
       toast.error('Please select a valid video file');
       return;
     }
 
     try {
+      console.log('[VideoUpload] Starting thumbnail generation...');
       // Generate thumbnail
       let thumbnailBytes: Uint8Array | null = null;
       try {
         thumbnailBytes = await generateThumbnail(file);
+        console.log('[VideoUpload] Thumbnail generated successfully:', {
+          size: thumbnailBytes.length,
+          sizeInKB: (thumbnailBytes.length / 1024).toFixed(2) + ' KB'
+        });
       } catch (error) {
-        console.warn('Failed to generate thumbnail:', error);
+        console.warn('[VideoUpload] Failed to generate thumbnail:', error);
+        toast.warning('Continuing without thumbnail');
         // Continue without thumbnail
       }
 
+      console.log('[VideoUpload] Reading video file as ArrayBuffer...');
       // Read video file
       const arrayBuffer = await file.arrayBuffer();
       const bytes = new Uint8Array(arrayBuffer);
+      console.log('[VideoUpload] Video file read successfully:', {
+        bytesLength: bytes.length,
+        sizeInMB: (bytes.length / (1024 * 1024)).toFixed(2) + ' MB'
+      });
+
+      console.log('[VideoUpload] Calling uploadVideo mutation with:', {
+        workspace,
+        fileSize: bytes.length,
+        thumbnailSize: thumbnailBytes?.length || 0,
+        hasThumbnail: !!thumbnailBytes
+      });
 
       uploadVideo({
         workspace,
         file: bytes,
         thumbnail: thumbnailBytes,
-        onProgress: setUploadProgress,
+        onProgress: (progress) => {
+          console.log('[VideoUpload] Upload progress:', progress + '%');
+          setUploadProgress(progress);
+        },
       });
     } catch (error) {
-      toast.error('Failed to upload video');
-      console.error(error);
+      console.error('[VideoUpload] Error during file processing:', error);
+      toast.error('Failed to upload video: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
 
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+      console.log('[VideoUpload] File input cleared');
     }
   };
 
   const handleClick = async () => {
+    console.log('[VideoUpload] Upload button clicked, isLoginSuccess:', isLoginSuccess);
+    
     if (!isLoginSuccess) {
+      console.log('[VideoUpload] User not logged in, initiating login...');
       try {
         await login();
+        console.log('[VideoUpload] Login successful');
       } catch (error) {
+        console.error('[VideoUpload] Login error:', error);
         toast.error('Failed to log in. Please try again.');
-        console.error('Login error:', error);
       }
       return;
     }
+    
+    console.log('[VideoUpload] Triggering file input click');
     fileInputRef.current?.click();
   };
 

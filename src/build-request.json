@@ -1,52 +1,93 @@
 {
   "kind": "build_request",
-  "title": "Fix non-functional 'Login to Upload' button in Media Library",
+  "title": "Debug and fix video upload functionality",
+  "projectName": "NicheHub",
   "priority": "high",
   "requirements": [
     {
-      "id": "REQ-27",
-      "text": "Debug and fix the 'Login to Upload' button in the VideoUpload component that is not triggering the Internet Identity authentication flow when clicked by an unauthenticated user",
+      "id": "REQ-29",
+      "text": "Debug the VideoUpload component's file upload flow to identify why video uploads are not working. Verify that the file input is properly bound, the handleFileSelect function is correctly invoked on file selection, and the uploadVideo mutation from useQueries is being triggered with the correct parameters (file, thumbnail, workspace).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "user-msg"
+          "msg-6"
         ],
         "quotes": [
-          "Login to upload button doesn't work"
+          "Upload doesn't work"
         ]
       },
       "acceptanceCriteria": [
-        "Clicking the 'Login to Upload' button successfully triggers the Internet Identity login flow",
-        "After successful authentication, the button changes to show the file upload interface",
-        "Error states are handled gracefully with toast notifications",
-        "The button remains responsive on mobile devices as shown in the screenshot"
+        "File input element in VideoUpload component correctly captures file selection events",
+        "handleFileSelect function is invoked when a video file is selected",
+        "uploadVideo mutation is called with valid file, thumbnail, and workspace parameters"
       ]
     },
     {
-      "id": "REQ-28",
-      "text": "Verify that the VideoUpload component properly accesses the login function from the useInternetIdentity hook and invokes it when the 'Login to Upload' button is clicked",
-      "target": "frontend",
+      "id": "REQ-30",
+      "text": "Debug the backend video upload endpoint in main.mo to ensure it properly receives and stores video blobs along with their metadata (caption, thumbnail, workspace). Verify that the storeVideoBlob function correctly persists video data and returns a valid video ID.",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "user-msg"
+          "msg-6"
+        ],
+        "quotes": [
+          "Upload doesn't work"
         ]
       },
       "acceptanceCriteria": [
-        "The VideoUpload component correctly imports and uses the useInternetIdentity hook",
-        "The login function is properly bound to the button's onClick handler",
-        "Console errors related to the authentication flow are resolved"
+        "Backend uploadVideo function accepts video blob, thumbnail blob, caption, and workspace parameters",
+        "Video data is correctly stored in the backend with a unique ID",
+        "Upload function returns success response with the new video ID"
+      ]
+    },
+    {
+      "id": "REQ-31",
+      "text": "Verify that the useQueries hook's uploadVideo mutation properly handles the upload progress tracking, error states, and success callbacks. Ensure that React Query's mutation state updates correctly trigger UI feedback in the VideoUpload component.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Upload doesn't work"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Upload progress percentage is correctly calculated and displayed during upload",
+        "Error states from failed uploads are captured and displayed to the user via toast notifications",
+        "Successful uploads trigger UI updates showing the newly uploaded video in the media library"
+      ]
+    },
+    {
+      "id": "REQ-32",
+      "text": "Add comprehensive error logging to the video upload flow in both frontend (VideoUpload component and useQueries hook) and backend (main.mo uploadVideo function) to capture detailed error information including file validation failures, network errors, and backend processing errors.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Upload doesn't work"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Console logs show detailed error information when upload fails",
+        "User receives clear error messages via toast notifications explaining what went wrong",
+        "Backend logs capture any errors during blob storage or metadata persistence"
       ]
     }
   ],
   "constraints": [
-    "Do not modify the useInternetIdentity hook implementation",
-    "Maintain the existing visual design and button styling shown in the screenshot",
-    "Preserve the authentication state checking logic"
+    "Maintain Internet Identity authentication requirement before allowing uploads",
+    "Preserve thumbnail generation functionality using thumbnailGenerator.ts",
+    "Do not change the workspace-based video storage architecture",
+    "Keep the existing React Query mutation patterns in useQueries.ts"
   ],
   "nonGoals": [
-    "Changing the overall authentication architecture",
-    "Modifying the Layout component's login button (which works correctly)",
-    "Adding new authentication methods beyond Internet Identity"
+    "Adding new upload features or file format support",
+    "Changing the UI design or layout of the VideoUpload component",
+    "Modifying the authentication flow or user management",
+    "Implementing batch upload functionality"
   ],
   "imageRequirements": {
     "required": [],

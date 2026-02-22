@@ -1,45 +1,78 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-22T01:42:36.871Z",
+  "generatedAt": "2026-02-22T01:52:26.259Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
-    "implemented": 2,
+    "total": 4,
+    "implemented": 3,
     "items": [
       {
-        "id": "REQ-27",
-        "summary": "Debug and fix the 'Login to Upload' button in the VideoUpload component that is not triggering the Internet Identity authentication flow when clicked by an unauthenticated user",
+        "id": "REQ-29",
+        "summary": "Debug the VideoUpload component's file upload flow to identify why video uploads are not working. Verify that the file input is properly bound, the handleFileSelect function is correctly invoked on file selection, and the uploadVideo mutation from useQueries is being triggered with the correct parameters (file, thumbnail, workspace).",
         "status": "implemented",
         "plannedFiles": [
+          "frontend/src/components/VideoUpload.tsx",
+          "frontend/src/hooks/useQueries.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/VideoUpload.tsx",
+          "frontend/src/hooks/useQueries.ts"
+        ]
+      },
+      {
+        "id": "REQ-30",
+        "summary": "Debug the backend video upload endpoint in main.mo to ensure it properly receives and stores video blobs along with their metadata (caption, thumbnail, workspace). Verify that the storeVideoBlob function correctly persists video data and returns a valid video ID.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-31",
+        "summary": "Verify that the useQueries hook's uploadVideo mutation properly handles the upload progress tracking, error states, and success callbacks. Ensure that React Query's mutation state updates correctly trigger UI feedback in the VideoUpload component.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useQueries.ts",
           "frontend/src/components/VideoUpload.tsx"
         ],
         "matchedFiles": [
+          "frontend/src/hooks/useQueries.ts",
           "frontend/src/components/VideoUpload.tsx"
         ]
       },
       {
-        "id": "REQ-28",
-        "summary": "Verify that the VideoUpload component properly accesses the login function from the useInternetIdentity hook and invokes it when the 'Login to Upload' button is clicked",
+        "id": "REQ-32",
+        "summary": "Add comprehensive error logging to the video upload flow in both frontend (VideoUpload component and useQueries hook) and backend (main.mo uploadVideo function) to capture detailed error information including file validation failures, network errors, and backend processing errors.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/VideoUpload.tsx"
+          "frontend/src/components/VideoUpload.tsx",
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/utils/thumbnailGenerator.ts"
         ],
         "matchedFiles": [
-          "frontend/src/components/VideoUpload.tsx"
+          "frontend/src/components/VideoUpload.tsx",
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/utils/thumbnailGenerator.ts"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
     "frontend/src/components/VideoUpload.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/utils/thumbnailGenerator.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

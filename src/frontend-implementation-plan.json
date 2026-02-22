@@ -1,38 +1,73 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix non-functional 'Login to Upload' button in Media Library",
+  "title": "Debug and fix video upload functionality",
   "requirements": [
     {
-      "id": "REQ-27",
-      "summary": "Debug and fix the 'Login to Upload' button to trigger Internet Identity authentication flow",
+      "id": "REQ-29",
+      "summary": "Debug VideoUpload component's file upload flow to ensure file input binding, handleFileSelect invocation, and uploadVideo mutation triggering work correctly",
       "acceptanceCriteria": [
-        "Clicking the 'Login to Upload' button successfully triggers the Internet Identity login flow",
-        "After successful authentication, the button changes to show the file upload interface",
-        "Error states are handled gracefully with toast notifications",
-        "The button remains responsive on mobile devices as shown in the screenshot"
+        "File input element in VideoUpload component correctly captures file selection events",
+        "handleFileSelect function is invoked when a video file is selected",
+        "uploadVideo mutation is called with valid file, thumbnail, and workspace parameters"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/VideoUpload.tsx",
           "operation": "modify",
-          "description": "Fix the 'Login to Upload' button onClick handler to properly invoke the login function from the useInternetIdentity hook. Ensure the button correctly triggers authentication when clicked by an unauthenticated user, and verify error handling with toast notifications is in place."
+          "description": "Add debugging console logs to trace the file upload flow. Log when file input onChange fires, log the selected file details in handleFileSelect, log before calling uploadVideo mutation with all parameters (file, thumbnail, workspace), and log the mutation response. Verify the file input ref is properly connected and the handleFileSelect function correctly processes the selected video file. Ensure the ExternalBlob.fromBytes conversion happens correctly for both video file and thumbnail. Add error boundary logging to catch any exceptions during file processing."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add comprehensive logging to the uploadVideo mutation to trace its execution. Log when the mutation is triggered with parameters, log the actor method call with workspace, id, file blob, caption, and thumbnail, and log the mutation result or error. Verify that the ExternalBlob instances are correctly passed to the backend uploadVideo method. Ensure the mutation's onSuccess and onError callbacks are properly configured and log their invocation. Verify the component usage instructions for the blob-storage component before implementing ExternalBlob handling."
         }
       ]
     },
     {
-      "id": "REQ-28",
-      "summary": "Verify VideoUpload component properly accesses and invokes the login function from useInternetIdentity hook",
+      "id": "REQ-31",
+      "summary": "Verify useQueries hook's uploadVideo mutation handles upload progress tracking, error states, and success callbacks correctly with proper UI feedback",
       "acceptanceCriteria": [
-        "The VideoUpload component correctly imports and uses the useInternetIdentity hook",
-        "The login function is properly bound to the button's onClick handler",
-        "Console errors related to the authentication flow are resolved"
+        "Upload progress percentage is correctly calculated and displayed during upload",
+        "Error states from failed uploads are captured and displayed to the user via toast notifications",
+        "Successful uploads trigger UI updates showing the newly uploaded video in the media library"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Debug the uploadVideo mutation's progress tracking implementation. Verify that the ExternalBlob.withUploadProgress method is correctly attached to the video file blob before upload, and that the progress callback updates state properly. Add logging to track progress percentage values as they're reported. Ensure the mutation's isLoading and isError states are correctly exposed and used by the VideoUpload component. Verify that onSuccess callback triggers query invalidation for the videos list. Add detailed error logging in the onError callback to capture and display error messages via toast. Verify the component usage instructions for the blob-storage component before implementing upload progress handling."
+        },
+        {
+          "path": "frontend/src/components/VideoUpload.tsx",
+          "operation": "modify",
+          "description": "Debug the UI feedback for upload states. Verify that uploadProgress state correctly receives and displays percentage updates from the ExternalBlob progress callback. Add logging to track when progress state updates occur. Ensure error states from the mutation trigger toast notifications with clear error messages. Verify that successful uploads clear the form state and show success feedback. Add logging to confirm that the mutation's isLoading, isError, and isSuccess states correctly control UI elements (progress bar, buttons, status messages). Ensure the upload button is properly disabled during upload and re-enabled on completion or error."
+        }
+      ]
+    },
+    {
+      "id": "REQ-32",
+      "summary": "Add comprehensive error logging to video upload flow in frontend components to capture file validation failures, network errors, and processing errors",
+      "acceptanceCriteria": [
+        "Console logs show detailed error information when upload fails",
+        "User receives clear error messages via toast notifications explaining what went wrong",
+        "Backend logs capture any errors during blob storage or metadata persistence"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/VideoUpload.tsx",
           "operation": "modify",
-          "description": "Review and correct the import and usage of the useInternetIdentity hook. Ensure the login function is properly destructured from the hook and correctly bound to the button's onClick event handler. Add console logging if needed to debug the authentication flow and remove any that block execution."
+          "description": "Add comprehensive error logging throughout the upload flow. Log file validation results (file type, size checks), log thumbnail generation attempts and results, log any exceptions during file reading or processing, and log the full error object when uploads fail. Add try-catch blocks around file processing operations with detailed error logging. Ensure all error paths trigger user-friendly toast notifications with actionable error messages (e.g., 'Video file is too large', 'Failed to generate thumbnail', 'Network error during upload'). Log the workspace context and authentication state when errors occur to aid debugging."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add detailed error logging to the uploadVideo mutation. In the onError callback, log the complete error object including error type, message, and any nested error details. Log the mutation variables (workspace, file size, thumbnail presence) when errors occur. Add try-catch blocks around the actor method call to capture and log synchronous errors. Ensure error messages are user-friendly and displayed via toast notifications. Log network-related errors separately from backend validation errors to help identify the failure source. Add logging for query invalidation failures after successful uploads."
+        },
+        {
+          "path": "frontend/src/utils/thumbnailGenerator.ts",
+          "operation": "modify",
+          "description": "Add error logging to thumbnail generation function. Log when video loading starts, log video metadata (duration, dimensions) once loaded, log canvas drawing operations, and log blob conversion results. Add try-catch blocks around video loading, canvas operations, and blob conversion with detailed error messages. Log the video file size and type to help diagnose loading failures. Ensure errors during thumbnail generation are propagated to the caller with clear error messages (e.g., 'Failed to load video for thumbnail', 'Canvas drawing failed', 'Blob conversion failed')."
         }
       ]
     }

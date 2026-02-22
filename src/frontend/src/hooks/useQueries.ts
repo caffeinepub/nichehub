@@ -45,35 +45,85 @@ export function useUploadVideo() {
       thumbnail: Uint8Array | null;
       onProgress: (progress: number) => void;
     }) => {
-      if (!actor) throw new Error('Actor not initialized');
+      console.log('[useUploadVideo] Mutation triggered with:', {
+        workspace,
+        fileSize: file.length,
+        thumbnailSize: thumbnail?.length || 0,
+        hasThumbnail: !!thumbnail,
+        actorInitialized: !!actor
+      });
 
-      const videoId = `video-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      
-      // Create video ExternalBlob
-      const arrayBuffer = new ArrayBuffer(file.length);
-      const fileBuffer = new Uint8Array(arrayBuffer);
-      fileBuffer.set(file);
-      const externalBlob = ExternalBlob.fromBytes(fileBuffer).withUploadProgress(onProgress);
-
-      // Create thumbnail ExternalBlob if available
-      let thumbnailBlob: ExternalBlob | null = null;
-      if (thumbnail) {
-        const thumbArrayBuffer = new ArrayBuffer(thumbnail.length);
-        const thumbBuffer = new Uint8Array(thumbArrayBuffer);
-        thumbBuffer.set(thumbnail);
-        thumbnailBlob = ExternalBlob.fromBytes(thumbBuffer);
+      if (!actor) {
+        console.error('[useUploadVideo] Actor not initialized');
+        throw new Error('Actor not initialized');
       }
 
-      await actor.uploadVideo(workspace, videoId, externalBlob, '', thumbnailBlob);
-      return videoId;
+      const videoId = `video-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      console.log('[useUploadVideo] Generated video ID:', videoId);
+      
+      try {
+        console.log('[useUploadVideo] Creating video ExternalBlob from bytes...');
+        // Create video ExternalBlob
+        const arrayBuffer = new ArrayBuffer(file.length);
+        const fileBuffer = new Uint8Array(arrayBuffer);
+        fileBuffer.set(file);
+        const externalBlob = ExternalBlob.fromBytes(fileBuffer).withUploadProgress((percentage) => {
+          console.log('[useUploadVideo] ExternalBlob upload progress:', percentage + '%');
+          onProgress(percentage);
+        });
+        console.log('[useUploadVideo] Video ExternalBlob created successfully');
+
+        // Create thumbnail ExternalBlob if available
+        let thumbnailBlob: ExternalBlob | null = null;
+        if (thumbnail) {
+          console.log('[useUploadVideo] Creating thumbnail ExternalBlob from bytes...');
+          const thumbArrayBuffer = new ArrayBuffer(thumbnail.length);
+          const thumbBuffer = new Uint8Array(thumbArrayBuffer);
+          thumbBuffer.set(thumbnail);
+          thumbnailBlob = ExternalBlob.fromBytes(thumbBuffer);
+          console.log('[useUploadVideo] Thumbnail ExternalBlob created successfully');
+        } else {
+          console.log('[useUploadVideo] No thumbnail provided, continuing without it');
+        }
+
+        console.log('[useUploadVideo] Calling actor.uploadVideo with:', {
+          workspace,
+          videoId,
+          externalBlobType: typeof externalBlob,
+          caption: '',
+          thumbnailBlobType: thumbnailBlob ? typeof thumbnailBlob : 'null'
+        });
+
+        const result = await actor.uploadVideo(workspace, videoId, externalBlob, '', thumbnailBlob);
+        console.log('[useUploadVideo] Upload successful, backend returned:', result);
+        
+        return videoId;
+      } catch (error) {
+        console.error('[useUploadVideo] Error during upload:', {
+          error,
+          errorMessage: error instanceof Error ? error.message : 'Unknown error',
+          errorStack: error instanceof Error ? error.stack : undefined
+        });
+        throw error;
+      }
     },
-    onSuccess: (_, variables) => {
+    onSuccess: (videoId, variables) => {
+      console.log('[useUploadVideo] onSuccess callback triggered:', {
+        videoId,
+        workspace: variables.workspace
+      });
       queryClient.invalidateQueries({ queryKey: ['videos', variables.workspace] });
+      console.log('[useUploadVideo] Query invalidation triggered for workspace:', variables.workspace);
       toast.success('Video uploaded successfully!');
     },
     onError: (error) => {
-      console.error('Upload error:', error);
-      toast.error('Failed to upload video');
+      console.error('[useUploadVideo] onError callback triggered:', {
+        error,
+        errorMessage: error instanceof Error ? error.message : 'Unknown error',
+        errorType: error?.constructor?.name,
+        errorStack: error instanceof Error ? error.stack : undefined
+      });
+      toast.error('Failed to upload video: ' + (error instanceof Error ? error.message : 'Unknown error'));
     },
   });
 }

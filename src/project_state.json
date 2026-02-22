@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 13,
+  "projectStateVersion": 15,
   "summary": "NicheHub: A mobile content management and social media scheduling app that allows users to manage two niche workspaces (Travel and AI Learning), repurpose video content with AI-generated captions for multiple platforms, and schedule posts via a visual calendar. The app uses Internet Identity for authentication and provides a manual export workflow where users can generate optimized captions and prepare content for Facebook, TikTok, and Instagram, then copy/paste to each platform's native app.",
   "architectural_notes": [
     "Mobile-first responsive design optimized for on-the-go use",
@@ -15,7 +15,7 @@
     "Script Lab feature for specialized AI content generation with structured output formats"
   ],
   "known_issues": [
-    "Login to upload button is not functioning"
+    "Video upload functionality is not working"
   ],
   "isFixRequest": true,
   "existing_features": [
@@ -218,6 +218,30 @@
         "REQ-28"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-debug-the-videoupload-component-s-file-upload-flow-to-identify-why-video-uploads-are-not-working-verify-that-the-file-input-is-properly-bound-the-handlefileselect-function-is-correctly-invoked-on-file-selection-and-the-uploadvideo-mutation-from-usequeries-is-being-triggered-with-the-correct-parameters-file-thumbnail-workspace",
+      "title": "Debug the VideoUpload component's file upload flow to identify why video uploads are not working. Verify that the file input is properly bound, the handleFileSelect function is correctly invoked on file selection, and the uploadVideo mutation from useQueries is being triggered with the correct parameters (file, thumbnail, workspace).",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-that-the-usequeries-hook-s-uploadvideo-mutation-properly-handles-the-upload-progress-tracking-error-states-and-success-callbacks-ensure-that-react-query-s-mutation-state-updates-correctly-trigger-ui-feedback-in-the-videoupload-component",
+      "title": "Verify that the useQueries hook's uploadVideo mutation properly handles the upload progress tracking, error states, and success callbacks. Ensure that React Query's mutation state updates correctly trigger UI feedback in the VideoUpload component.",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-comprehensive-error-logging-to-the-video-upload-flow-in-both-frontend-videoupload-component-and-usequeries-hook-and-backend-main-mo-uploadvideo-function-to-capture-detailed-error-information-including-file-validation-failures-network-errors-and-backend-processing-errors",
+      "title": "Add comprehensive error logging to the video upload flow in both frontend (VideoUpload component and useQueries hook) and backend (main.mo uploadVideo function) to capture detailed error information including file validation failures, network errors, and backend processing errors.",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -290,6 +314,14 @@
       "summary": "Create a backend function that generates a structured travel itinerary script with three sections: Hook (3-second visual text overlay), Body (numbered 3-day itinerary), and CTA ('Save for later' prompt). Use a 'Travel Expert' persona that is cinematic and helpful in tone.",
       "reqIds": [
         "REQ-21"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-22",
+      "summary": "Debug the backend video upload endpoint in main.mo to ensure it properly receives and stores video blobs along with their metadata (caption, thumbnail, workspace). Verify that the storeVideoBlob function correctly persists video data and returns a valid video ID.",
+      "reqIds": [
+        "REQ-30"
       ],
       "status": "pending"
     }

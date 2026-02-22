@@ -85,7 +85,7 @@ export interface _SERVICE {
   >,
   'uploadVideo' : ActorMethod<
     [Workspace, string, ExternalBlob, string, [] | [ExternalBlob]],
-    undefined
+    string
   >,
 }
 export declare const idlService: IDL.ServiceClass;

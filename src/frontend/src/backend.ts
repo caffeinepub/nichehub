@@ -150,7 +150,7 @@ export interface backendInterface {
     getVideosByWorkspace(workspace: Workspace): Promise<Array<Video>>;
     saveItinerary(id: string, hook: string, days: Array<string>, cta: string): Promise<void>;
     schedulePost(videoId: string, workspace: Workspace, platforms: Array<Platform>, captions: Caption, scheduledTime: Time): Promise<void>;
-    uploadVideo(workspace: Workspace, id: string, file: ExternalBlob, caption: string, thumbnail: ExternalBlob | null): Promise<void>;
+    uploadVideo(workspace: Workspace, id: string, file: ExternalBlob, caption: string, thumbnail: ExternalBlob | null): Promise<string>;
 }
 import type { Caption as _Caption, ExternalBlob as _ExternalBlob, Platform as _Platform, ScheduledPost as _ScheduledPost, Time as _Time, Video as _Video, Workspace as _Workspace, _CaffeineStorageRefillInformation as __CaffeineStorageRefillInformation, _CaffeineStorageRefillResult as __CaffeineStorageRefillResult } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
@@ -351,7 +351,7 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async uploadVideo(arg0: Workspace, arg1: string, arg2: ExternalBlob, arg3: string, arg4: ExternalBlob | null): Promise<void> {
+    async uploadVideo(arg0: Workspace, arg1: string, arg2: ExternalBlob, arg3: string, arg4: ExternalBlob | null): Promise<string> {
         if (this.processError) {
             try {
                 const result = await this.actor.uploadVideo(to_candid_Workspace_n21(this._uploadFile, this._downloadFile, arg0), arg1, await to_candid_ExternalBlob_n26(this._uploadFile, this._downloadFile, arg2), arg3, await to_candid_opt_n27(this._uploadFile, this._downloadFile, arg4));

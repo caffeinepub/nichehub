@@ -58,5 +58,5 @@ export interface backendInterface {
     getVideosByWorkspace(workspace: Workspace): Promise<Array<Video>>;
     saveItinerary(id: string, hook: string, days: Array<string>, cta: string): Promise<void>;
     schedulePost(videoId: string, workspace: Workspace, platforms: Array<Platform>, captions: Caption, scheduledTime: Time): Promise<void>;
-    uploadVideo(workspace: Workspace, id: string, file: ExternalBlob, caption: string, thumbnail: ExternalBlob | null): Promise<void>;
+    uploadVideo(workspace: Workspace, id: string, file: ExternalBlob, caption: string, thumbnail: ExternalBlob | null): Promise<string>;
 }
