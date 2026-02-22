@@ -1,99 +1,59 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-22T00:33:30.241Z",
+  "generatedAt": "2026-02-22T01:12:14.128Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 5,
-    "implemented": 5,
+    "total": 2,
+    "implemented": 2,
     "items": [
       {
-        "id": "REQ-11",
-        "summary": "Remove the 'Post Now' button functionality that simulates direct posting to social media platforms (Facebook, Instagram, TikTok). Replace it with a 'Copy Captions' button that copies all generated captions to the clipboard in a formatted structure showing platform names and their respective captions.",
+        "id": "REQ-16",
+        "summary": "Replace the current video playback implementation in the Media Gallery with a high-definition video player component that supports .mp4 format and 4K resolution playback. The player should appear when a user clicks on a video card and include standard controls (play, pause, volume, fullscreen, seek bar).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/RepurposeModal.tsx"
+          "frontend/src/components/VideoPlayerModal.tsx",
+          "frontend/src/components/VideoCard.tsx",
+          "frontend/src/components/MediaLibrary.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/RepurposeModal.tsx"
+          "frontend/src/components/VideoPlayerModal.tsx",
+          "frontend/src/components/VideoCard.tsx",
+          "frontend/src/components/MediaLibrary.tsx"
         ]
       },
       {
-        "id": "REQ-12",
-        "summary": "Update the scheduled posts workflow to clarify that scheduling is for content planning only, not automated posting. Add UI indicators showing that users need to manually post content at the scheduled time. When viewing scheduled posts on the calendar, provide a 'Copy Captions' action for each scheduled item.",
+        "id": "REQ-17",
+        "summary": "Generate and display a preview thumbnail image for every video in the media gallery. Each VideoCard component should render this thumbnail so users can visually identify videos before clicking them.",
         "status": "implemented",
         "plannedFiles": [
+          "frontend/src/components/VideoCard.tsx",
           "frontend/src/components/ScheduledPostItem.tsx",
-          "frontend/src/components/ScheduleButton.tsx",
-          "frontend/src/components/TimePickerModal.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/ScheduledPostItem.tsx",
-          "frontend/src/components/ScheduleButton.tsx",
-          "frontend/src/components/TimePickerModal.tsx"
-        ]
-      },
-      {
-        "id": "REQ-13",
-        "summary": "Remove the socialPlatformPublisher utility and all references to simulated platform publishing. Clean up any success/error handling logic related to fake API responses for social media posting.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/utils/socialPlatformPublisher.ts",
-          "frontend/src/components/PostNowButton.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/utils/socialPlatformPublisher.ts",
-          "frontend/src/components/PostNowButton.tsx"
-        ]
-      },
-      {
-        "id": "REQ-14",
-        "summary": "Add Internet Identity authentication to the application. Implement a login/logout flow using the existing useInternetIdentity hook. Show the user's authentication status in the header and require authentication before allowing video uploads or content management actions.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/Layout.tsx",
           "frontend/src/components/VideoUpload.tsx",
-          "frontend/src/components/RepurposeModal.tsx"
+          "frontend/src/utils/thumbnailGenerator.ts"
         ],
         "matchedFiles": [
-          "frontend/src/components/Layout.tsx",
+          "frontend/src/components/VideoCard.tsx",
           "frontend/src/components/VideoUpload.tsx",
-          "frontend/src/components/RepurposeModal.tsx"
-        ]
-      },
-      {
-        "id": "REQ-15",
-        "summary": "Add informational text or a help section explaining the manual export workflow. Clarify that NicheHub generates AI-optimized captions and helps with content planning, but users must manually copy captions and post content to each platform's native app at the scheduled time.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/HelpModal.tsx",
-          "frontend/src/components/Layout.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/HelpModal.tsx",
-          "frontend/src/components/Layout.tsx"
+          "frontend/src/utils/thumbnailGenerator.ts"
         ]
       }
     ]
   },
   "changedFiles": [
     "build-request.json",
-    "build-template/README.md",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/HelpModal.tsx",
-    "frontend/src/components/Layout.tsx",
-    "frontend/src/components/PostNowButton.tsx",
-    "frontend/src/components/RepurposeModal.tsx",
-    "frontend/src/components/ScheduleButton.tsx",
-    "frontend/src/components/ScheduledPostItem.tsx",
-    "frontend/src/components/TimePickerModal.tsx",
+    "frontend/src/components/MediaLibrary.tsx",
+    "frontend/src/components/VideoCard.tsx",
+    "frontend/src/components/VideoPlayerModal.tsx",
     "frontend/src/components/VideoUpload.tsx",
-    "frontend/src/utils/socialPlatformPublisher.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/utils/thumbnailGenerator.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

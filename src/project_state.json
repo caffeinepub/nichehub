@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 5,
+  "projectStateVersion": 7,
   "summary": "NicheHub: A mobile content management and social media scheduling app that allows users to manage two niche workspaces (Travel and AI Learning), repurpose video content with AI-generated captions for multiple platforms, and schedule posts via a visual calendar. The app uses Internet Identity for authentication and provides a manual export workflow where users can generate optimized captions and prepare content for Facebook, TikTok, and Instagram, then copy/paste to each platform's native app.",
   "architectural_notes": [
     "Mobile-first responsive design optimized for on-the-go use",
@@ -14,7 +14,7 @@
     "No direct social media API integrations (Facebook, TikTok, Instagram posting APIs not supported)"
   ],
   "known_issues": [],
-  "isFixRequest": false,
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-create-a-workspace-toggle-component-at-the-top-of-the-interface-that-allows-switching-between-travel-and-ai-learning-workspaces-the-selected-workspace-should-persist-across-sessions-and-determine-which-media-folder-is-displayed",
@@ -119,6 +119,22 @@
         "REQ-15"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-video-playback-implementation-in-the-media-gallery-with-a-high-definition-video-player-component-that-supports-mp4-format-and-4k-resolution-playback-the-player-should-appear-when-a-user-clicks-on-a-video-card-and-include-standard-controls-play-pause-volume-fullscreen-seek-bar",
+      "title": "Replace the current video playback implementation in the Media Gallery with a high-definition video player component that supports .mp4 format and 4K resolution playback. The player should appear when a user clicks on a video card and include standard controls (play, pause, volume, fullscreen, seek bar).",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-display-a-preview-thumbnail-image-for-every-video-in-the-media-gallery-each-videocard-component-should-render-this-thumbnail-so-users-can-visually-identify-videos-before-clicking-them",
+      "title": "Generate and display a preview thumbnail image for every video in the media gallery. Each VideoCard component should render this thumbnail so users can visually identify videos before clicking them.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -165,6 +181,18 @@
     {
       "id": "AR-13",
       "summary": "Create manual export workflow for generated captions and prepared content (copy/paste to native platform apps)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Fix video player: implement HD video player with .mp4 and 4K support",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Add preview thumbnails for all videos in the media gallery",
       "reqIds": [],
       "status": "pending"
     }

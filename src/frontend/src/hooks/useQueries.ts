@@ -37,23 +37,34 @@ export function useUploadVideo() {
     mutationFn: async ({
       workspace,
       file,
+      thumbnail,
       onProgress,
     }: {
       workspace: Workspace;
       file: Uint8Array;
+      thumbnail: Uint8Array | null;
       onProgress: (progress: number) => void;
     }) => {
       if (!actor) throw new Error('Actor not initialized');
 
       const videoId = `video-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      // Create a new ArrayBuffer and copy the data to ensure proper type
+      
+      // Create video ExternalBlob
       const arrayBuffer = new ArrayBuffer(file.length);
       const fileBuffer = new Uint8Array(arrayBuffer);
       fileBuffer.set(file);
-      
       const externalBlob = ExternalBlob.fromBytes(fileBuffer).withUploadProgress(onProgress);
 
-      await actor.uploadVideo(workspace, videoId, externalBlob, '', null);
+      // Create thumbnail ExternalBlob if available
+      let thumbnailBlob: ExternalBlob | null = null;
+      if (thumbnail) {
+        const thumbArrayBuffer = new ArrayBuffer(thumbnail.length);
+        const thumbBuffer = new Uint8Array(thumbArrayBuffer);
+        thumbBuffer.set(thumbnail);
+        thumbnailBlob = ExternalBlob.fromBytes(thumbBuffer);
+      }
+
+      await actor.uploadVideo(workspace, videoId, externalBlob, '', thumbnailBlob);
       return videoId;
     },
     onSuccess: (_, variables) => {

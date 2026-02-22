@@ -7,6 +7,7 @@ import { Upload, Loader2, Lock } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { toast } from 'sonner';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { generateThumbnail } from '../utils/thumbnailGenerator';
 
 export default function VideoUpload() {
   const { workspace } = useWorkspace();
@@ -25,12 +26,23 @@ export default function VideoUpload() {
     }
 
     try {
+      // Generate thumbnail
+      let thumbnailBytes: Uint8Array | null = null;
+      try {
+        thumbnailBytes = await generateThumbnail(file);
+      } catch (error) {
+        console.warn('Failed to generate thumbnail:', error);
+        // Continue without thumbnail
+      }
+
+      // Read video file
       const arrayBuffer = await file.arrayBuffer();
       const bytes = new Uint8Array(arrayBuffer);
 
       uploadVideo({
         workspace,
         file: bytes,
+        thumbnail: thumbnailBytes,
         onProgress: setUploadProgress,
       });
     } catch (error) {

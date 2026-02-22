@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useWorkspace } from '../contexts/WorkspaceContext';
-import { useVideos, useUploadVideo } from '../hooks/useQueries';
+import { useVideos } from '../hooks/useQueries';
 import VideoUpload from './VideoUpload';
 import VideoCard from './VideoCard';
 import RepurposeModal from './RepurposeModal';
+import VideoPlayerModal from './VideoPlayerModal';
 import { Video } from '../backend';
 import { Loader2 } from 'lucide-react';
 
@@ -11,6 +12,7 @@ export default function MediaLibrary() {
   const { workspace } = useWorkspace();
   const { data: videos, isLoading } = useVideos(workspace);
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const [playingVideo, setPlayingVideo] = useState<Video | null>(null);
 
   if (isLoading) {
     return (
@@ -31,6 +33,7 @@ export default function MediaLibrary() {
               key={video.id}
               video={video}
               onRepurpose={() => setSelectedVideo(video)}
+              onPlay={() => setPlayingVideo(video)}
             />
           ))}
         </div>
@@ -47,6 +50,12 @@ export default function MediaLibrary() {
           onClose={() => setSelectedVideo(null)}
         />
       )}
+
+      <VideoPlayerModal
+        video={playingVideo}
+        open={!!playingVideo}
+        onClose={() => setPlayingVideo(null)}
+      />
     </div>
   );
 }

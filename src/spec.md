@@ -1,15 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Replace simulated social media posting with a realistic manual export workflow and add Internet Identity authentication.
+**Goal:** Implement a high-definition video player with preview thumbnails for the Media Gallery.
 
 **Planned changes:**
-- Remove "Post Now" button and replace with "Copy Captions" button that copies formatted captions to clipboard
-- Update scheduled posts to clarify scheduling is for planning only, with manual posting required
-- Add "Copy Captions" action to calendar scheduled posts
-- Remove socialPlatformPublisher utility and all simulated posting logic
-- Implement Internet Identity login/logout flow in the header
-- Require authentication for video uploads and content management
-- Add help section explaining the manual export workflow
+- Replace current video playback with an HD video player component that supports .mp4 and 4K resolution
+- Add standard playback controls (play, pause, volume, fullscreen, seek bar) to the video player
+- Generate and display preview thumbnail images for every video in the gallery
+- Ensure thumbnails appear in both the MediaLibrary grid view and calendar sidebar
 
-**User-visible outcome:** Users authenticate with Internet Identity, generate AI-optimized captions, copy them to clipboard in a formatted structure, and manually post to social media platforms. Scheduling helps with content planning, but posting remains manual.
+**User-visible outcome:** Users can click on any video to open it in a high-definition player with full controls, and can see preview thumbnails for all videos before clicking them.
