@@ -109,6 +109,12 @@ export interface _CaffeineStorageCreateCertificateResult {
     method: string;
     blob_hash: string;
 }
+export interface Itinerary {
+    id: string;
+    cta: string;
+    days: Array<string>;
+    hook: string;
+}
 export interface _CaffeineStorageRefillResult {
     success?: boolean;
     topped_up_amount?: bigint;
@@ -136,11 +142,13 @@ export interface backendInterface {
     _caffeineStorageCreateCertificate(blobHash: string): Promise<_CaffeineStorageCreateCertificateResult>;
     _caffeineStorageRefillCashier(refillInformation: _CaffeineStorageRefillInformation | null): Promise<_CaffeineStorageRefillResult>;
     _caffeineStorageUpdateGatewayPrincipals(): Promise<void>;
+    getAllItineraries(): Promise<Array<Itinerary>>;
     getAllScheduledPosts(): Promise<Array<ScheduledPost>>;
     getAllVideos(): Promise<Array<Video>>;
     getScheduledPosts(workspace: Workspace): Promise<Array<ScheduledPost>>;
     getVideoWorkspace(id: string): Promise<Workspace>;
     getVideosByWorkspace(workspace: Workspace): Promise<Array<Video>>;
+    saveItinerary(id: string, hook: string, days: Array<string>, cta: string): Promise<void>;
     schedulePost(videoId: string, workspace: Workspace, platforms: Array<Platform>, captions: Caption, scheduledTime: Time): Promise<void>;
     uploadVideo(workspace: Workspace, id: string, file: ExternalBlob, caption: string, thumbnail: ExternalBlob | null): Promise<void>;
 }
@@ -231,6 +239,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async getAllItineraries(): Promise<Array<Itinerary>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAllItineraries();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAllItineraries();
+            return result;
+        }
+    }
     async getAllScheduledPosts(): Promise<Array<ScheduledPost>> {
         if (this.processError) {
             try {
@@ -299,6 +321,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getVideosByWorkspace(to_candid_Workspace_n21(this._uploadFile, this._downloadFile, arg0));
             return from_candid_vec_n16(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async saveItinerary(arg0: string, arg1: string, arg2: Array<string>, arg3: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.saveItinerary(arg0, arg1, arg2, arg3);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.saveItinerary(arg0, arg1, arg2, arg3);
+            return result;
         }
     }
     async schedulePost(arg0: string, arg1: Workspace, arg2: Array<Platform>, arg3: Caption, arg4: Time): Promise<void> {

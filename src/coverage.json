@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-22T01:12:14.128Z",
+  "generatedAt": "2026-02-22T01:42:36.871Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -11,34 +11,25 @@
     "implemented": 2,
     "items": [
       {
-        "id": "REQ-16",
-        "summary": "Replace the current video playback implementation in the Media Gallery with a high-definition video player component that supports .mp4 format and 4K resolution playback. The player should appear when a user clicks on a video card and include standard controls (play, pause, volume, fullscreen, seek bar).",
+        "id": "REQ-27",
+        "summary": "Debug and fix the 'Login to Upload' button in the VideoUpload component that is not triggering the Internet Identity authentication flow when clicked by an unauthenticated user",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/VideoPlayerModal.tsx",
-          "frontend/src/components/VideoCard.tsx",
-          "frontend/src/components/MediaLibrary.tsx"
+          "frontend/src/components/VideoUpload.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/VideoPlayerModal.tsx",
-          "frontend/src/components/VideoCard.tsx",
-          "frontend/src/components/MediaLibrary.tsx"
+          "frontend/src/components/VideoUpload.tsx"
         ]
       },
       {
-        "id": "REQ-17",
-        "summary": "Generate and display a preview thumbnail image for every video in the media gallery. Each VideoCard component should render this thumbnail so users can visually identify videos before clicking them.",
+        "id": "REQ-28",
+        "summary": "Verify that the VideoUpload component properly accesses the login function from the useInternetIdentity hook and invokes it when the 'Login to Upload' button is clicked",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/VideoCard.tsx",
-          "frontend/src/components/ScheduledPostItem.tsx",
-          "frontend/src/components/VideoUpload.tsx",
-          "frontend/src/utils/thumbnailGenerator.ts"
+          "frontend/src/components/VideoUpload.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/VideoCard.tsx",
-          "frontend/src/components/VideoUpload.tsx",
-          "frontend/src/utils/thumbnailGenerator.ts"
+          "frontend/src/components/VideoUpload.tsx"
         ]
       }
     ]
@@ -48,12 +39,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/MediaLibrary.tsx",
-    "frontend/src/components/VideoCard.tsx",
-    "frontend/src/components/VideoPlayerModal.tsx",
     "frontend/src/components/VideoUpload.tsx",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/utils/thumbnailGenerator.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

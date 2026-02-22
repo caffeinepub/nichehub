@@ -2,12 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-replace-the-current-video-playback-implementation-in-the-media-gallery-with-a-high-definition-video-player-component-that-supports-mp4-format-and-4k-resolution-playback-the-player-should-appear-when-a-user-clicks-on-a-video-card-and-include-standard-controls-play-pause-volume-fullscreen-seek-bar",
-      "featureTitle": "Replace the current video playback implementation in the Media Gallery with a high-definition video player component that supports .mp4 format and 4K resolution playback. The player should appear when a user clicks on a video card and include standard controls (play, pause, volume, fullscreen, seek bar).",
+      "featureId": "feature-debug-and-fix-the-login-to-upload-button-in-the-videoupload-component-that-is-not-triggering-the-internet-identity-authentication-flow-when-clicked-by-an-unauthenticated-user",
+      "featureTitle": "Debug and fix the 'Login to Upload' button in the VideoUpload component that is not triggering the Internet Identity authentication flow when clicked by an unauthenticated user",
       "files": [
-        "frontend/src/components/MediaLibrary.tsx",
-        "frontend/src/components/VideoCard.tsx",
-        "frontend/src/components/VideoPlayerModal.tsx"
+        "frontend/src/components/VideoUpload.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -18,17 +16,15 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-16"
+        "REQ-27"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-generate-and-display-a-preview-thumbnail-image-for-every-video-in-the-media-gallery-each-videocard-component-should-render-this-thumbnail-so-users-can-visually-identify-videos-before-clicking-them",
-      "featureTitle": "Generate and display a preview thumbnail image for every video in the media gallery. Each VideoCard component should render this thumbnail so users can visually identify videos before clicking them.",
+      "featureId": "feature-verify-that-the-videoupload-component-properly-accesses-the-login-function-from-the-useinternetidentity-hook-and-invokes-it-when-the-login-to-upload-button-is-clicked",
+      "featureTitle": "Verify that the VideoUpload component properly accesses the login function from the useInternetIdentity hook and invokes it when the 'Login to Upload' button is clicked",
       "files": [
-        "frontend/src/components/VideoCard.tsx",
-        "frontend/src/components/VideoUpload.tsx",
-        "frontend/src/utils/thumbnailGenerator.ts"
+        "frontend/src/components/VideoUpload.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -39,7 +35,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-17"
+        "REQ-28"
       ],
       "confidence": "high"
     }

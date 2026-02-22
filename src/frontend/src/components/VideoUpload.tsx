@@ -14,7 +14,7 @@ export default function VideoUpload() {
   const { mutate: uploadVideo, isPending } = useUploadVideo();
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { isLoginSuccess } = useInternetIdentity();
+  const { isLoginSuccess, login, isLoggingIn } = useInternetIdentity();
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -55,9 +55,14 @@ export default function VideoUpload() {
     }
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (!isLoginSuccess) {
-      toast.error('Please log in to upload videos');
+      try {
+        await login();
+      } catch (error) {
+        toast.error('Failed to log in. Please try again.');
+        console.error('Login error:', error);
+      }
       return;
     }
     fileInputRef.current?.click();
@@ -77,15 +82,22 @@ export default function VideoUpload() {
         
         <Button
           onClick={handleClick}
-          disabled={isPending || !isLoginSuccess}
+          disabled={isPending || isLoggingIn}
           className="w-full h-24 text-lg"
           size="lg"
         >
           {!isLoginSuccess ? (
-            <>
-              <Lock className="w-6 h-6 mr-2" />
-              Login to Upload
-            </>
+            isLoggingIn ? (
+              <>
+                <Loader2 className="w-6 h-6 mr-2 animate-spin" />
+                Logging in...
+              </>
+            ) : (
+              <>
+                <Lock className="w-6 h-6 mr-2" />
+                Login to Upload
+              </>
+            )
           ) : isPending ? (
             <>
               <Loader2 className="w-6 h-6 mr-2 animate-spin" />

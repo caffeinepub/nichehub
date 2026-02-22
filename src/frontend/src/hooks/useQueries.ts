@@ -104,3 +104,31 @@ export function useSchedulePost() {
     },
   });
 }
+
+export function useSaveItinerary() {
+  const { actor } = useActor();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      hook,
+      days,
+      cta,
+    }: {
+      id: string;
+      hook: string;
+      days: string[];
+      cta: string;
+    }) => {
+      if (!actor) throw new Error('Actor not initialized');
+      await actor.saveItinerary(id, hook, days, cta);
+    },
+    onSuccess: () => {
+      toast.success('Itinerary saved!');
+    },
+    onError: (error) => {
+      console.error('Save error:', error);
+      toast.error('Failed to save itinerary');
+    },
+  });
+}

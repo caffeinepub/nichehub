@@ -1,65 +1,38 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix video player and add preview thumbnails",
+  "title": "Fix non-functional 'Login to Upload' button in Media Library",
   "requirements": [
     {
-      "id": "REQ-16",
-      "summary": "Replace current video playback with HD video player supporting .mp4 and 4K resolution with standard controls",
+      "id": "REQ-27",
+      "summary": "Debug and fix the 'Login to Upload' button to trigger Internet Identity authentication flow",
       "acceptanceCriteria": [
-        "Clicking a video card opens a video player modal or dedicated player view",
-        "Video player supports .mp4 file format",
-        "Video player can handle 4K resolution content without quality degradation",
-        "Player includes standard playback controls (play/pause, volume, seek, fullscreen)",
-        "Player can be closed to return to the media gallery view"
+        "Clicking the 'Login to Upload' button successfully triggers the Internet Identity login flow",
+        "After successful authentication, the button changes to show the file upload interface",
+        "Error states are handled gracefully with toast notifications",
+        "The button remains responsive on mobile devices as shown in the screenshot"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/VideoPlayerModal.tsx",
-          "operation": "create",
-          "description": "Create a new modal component for high-definition video playback. Use native HTML5 video element with controls attribute to support .mp4 format and 4K resolution. Include play/pause, volume, seek bar, and fullscreen controls. Use the blob-storage component's ExternalBlob.getDirectURL() method to obtain the video URL for streaming playback. Verify the component's usage instructions before implementing. The modal should accept a video object as prop and provide a close handler to return to the gallery view."
-        },
-        {
-          "path": "frontend/src/components/VideoCard.tsx",
+          "path": "frontend/src/components/VideoUpload.tsx",
           "operation": "modify",
-          "description": "Add click handler to VideoCard component that opens the VideoPlayerModal when a user clicks on the video card. Pass the video object to the modal and manage modal open/close state. Ensure the existing drag-and-drop functionality for calendar scheduling is preserved."
-        },
-        {
-          "path": "frontend/src/components/MediaLibrary.tsx",
-          "operation": "modify",
-          "description": "Add state management for the VideoPlayerModal in MediaLibrary component. Wire the modal to open when a video card is clicked, passing the selected video data. Ensure the modal can be closed to return to the gallery view."
+          "description": "Fix the 'Login to Upload' button onClick handler to properly invoke the login function from the useInternetIdentity hook. Ensure the button correctly triggers authentication when clicked by an unauthenticated user, and verify error handling with toast notifications is in place."
         }
       ]
     },
     {
-      "id": "REQ-17",
-      "summary": "Generate and display preview thumbnail images for all videos in the media gallery",
+      "id": "REQ-28",
+      "summary": "Verify VideoUpload component properly accesses and invokes the login function from useInternetIdentity hook",
       "acceptanceCriteria": [
-        "Every video in the media gallery displays a thumbnail preview image",
-        "Thumbnails are generated from the video content (e.g., first frame or mid-point frame)",
-        "Thumbnails are visible in both the MediaLibrary grid view and when videos appear in the calendar sidebar",
-        "Thumbnails load efficiently without impacting page performance"
+        "The VideoUpload component correctly imports and uses the useInternetIdentity hook",
+        "The login function is properly bound to the button's onClick handler",
+        "Console errors related to the authentication flow are resolved"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/VideoCard.tsx",
-          "operation": "modify",
-          "description": "Update VideoCard to display the thumbnail from video.thumbnail using the blob-storage component's ExternalBlob.getDirectURL() method. Verify the component's usage instructions before implementing. If thumbnail exists, render it as the card's preview image using an img element with the direct URL. Include fallback UI for videos without thumbnails. Ensure thumbnails load efficiently with appropriate image loading attributes (loading='lazy')."
-        },
-        {
-          "path": "frontend/src/components/ScheduledPostItem.tsx",
-          "operation": "modify",
-          "description": "Update ScheduledPostItem to render the video thumbnail in the calendar sidebar using the blob-storage component's ExternalBlob.getDirectURL() method when the video object includes a thumbnail field. Verify the component's usage instructions before implementing. Display the thumbnail image alongside the scheduled post details."
-        },
-        {
           "path": "frontend/src/components/VideoUpload.tsx",
           "operation": "modify",
-          "description": "Add client-side thumbnail generation logic during video upload. Use HTML5 video element to load the uploaded video file, seek to a frame (first frame or mid-point), capture it to a canvas, convert to blob (JPEG format), and create an ExternalBlob using ExternalBlob.fromBytes(). Verify the component's usage instructions before implementing. Pass the generated thumbnail ExternalBlob to the uploadVideo backend function as the thumbnail parameter (currently accepts ExternalBlob | null)."
-        },
-        {
-          "path": "frontend/src/utils/thumbnailGenerator.ts",
-          "operation": "create",
-          "description": "Create a utility function that generates a thumbnail from a video File object. Use HTML5 video element to load the video, seek to the first frame or mid-point, draw the frame to a canvas element, and convert the canvas to a Uint8Array (JPEG format). Return the Uint8Array that can be wrapped in ExternalBlob.fromBytes(). This utility will be used by VideoUpload component during the upload process."
+          "description": "Review and correct the import and usage of the useInternetIdentity hook. Ensure the login function is properly destructured from the hook and correctly bound to the button's onClick event handler. Add console logging if needed to debug the authentication flow and remove any that block execution."
         }
       ]
     }

@@ -1,10 +1,14 @@
 import MixinStorage "blob-storage/Mixin";
 import Storage "blob-storage/Storage";
+
 import Time "mo:core/Time";
 import Text "mo:core/Text";
 import Map "mo:core/Map";
 import List "mo:core/List";
 import Iter "mo:core/Iter";
+
+
+
 
 actor {
   include MixinStorage();
@@ -42,8 +46,16 @@ actor {
     scheduledTime : Time.Time;
   };
 
+  type Itinerary = {
+    id : Text;
+    hook : Text;
+    days : [Text];
+    cta : Text;
+  };
+
   let videos = Map.empty<Text, Video>();
   let scheduledPosts = Map.empty<Text, ScheduledPost>();
+  let itineraries = Map.empty<Text, Itinerary>();
 
   // Upload a new video
   public shared ({ caller }) func uploadVideo(workspace : Workspace, id : Text, file : Storage.ExternalBlob, caption : Text, thumbnail : ?Storage.ExternalBlob) : async () {
@@ -89,6 +101,17 @@ actor {
     filteredPosts;
   };
 
+  // Persist Travel Itinerary
+  public shared ({ caller }) func saveItinerary(id : Text, hook : Text, days : [Text], cta : Text) : async () {
+    let itinerary : Itinerary = {
+      id;
+      hook;
+      days;
+      cta;
+    };
+    itineraries.add(id, itinerary);
+  };
+
   // Get all videos
   public query ({ caller }) func getAllVideos() : async [Video] {
     videos.values().toArray();
@@ -97,6 +120,10 @@ actor {
   // Get all scheduled posts
   public query ({ caller }) func getAllScheduledPosts() : async [ScheduledPost] {
     scheduledPosts.values().toArray();
+  };
+
+  public query ({ caller }) func getAllItineraries() : async [Itinerary] {
+    itineraries.values().toArray();
   };
 
   // Get workspace entry for video id

@@ -1,60 +1,52 @@
 {
   "kind": "build_request",
-  "title": "Fix video player and add preview thumbnails",
-  "projectName": "NicheHub",
+  "title": "Fix non-functional 'Login to Upload' button in Media Library",
   "priority": "high",
   "requirements": [
     {
-      "id": "REQ-16",
-      "text": "Replace the current video playback implementation in the Media Gallery with a high-definition video player component that supports .mp4 format and 4K resolution playback. The player should appear when a user clicks on a video card and include standard controls (play, pause, volume, fullscreen, seek bar).",
+      "id": "REQ-27",
+      "text": "Debug and fix the 'Login to Upload' button in the VideoUpload component that is not triggering the Internet Identity authentication flow when clicked by an unauthenticated user",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-last"
+          "user-msg"
         ],
         "quotes": [
-          "when I click a video, it opens in a High-Definition Video Player that supports .mp4 and 4K playback"
+          "Login to upload button doesn't work"
         ]
       },
       "acceptanceCriteria": [
-        "Clicking a video card opens a video player modal or dedicated player view",
-        "Video player supports .mp4 file format",
-        "Video player can handle 4K resolution content without quality degradation",
-        "Player includes standard playback controls (play/pause, volume, seek, fullscreen)",
-        "Player can be closed to return to the media gallery view"
+        "Clicking the 'Login to Upload' button successfully triggers the Internet Identity login flow",
+        "After successful authentication, the button changes to show the file upload interface",
+        "Error states are handled gracefully with toast notifications",
+        "The button remains responsive on mobile devices as shown in the screenshot"
       ]
     },
     {
-      "id": "REQ-17",
-      "text": "Generate and display a preview thumbnail image for every video in the media gallery. Each VideoCard component should render this thumbnail so users can visually identify videos before clicking them.",
+      "id": "REQ-28",
+      "text": "Verify that the VideoUpload component properly accesses the login function from the useInternetIdentity hook and invokes it when the 'Login to Upload' button is clicked",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-last"
-        ],
-        "quotes": [
-          "Add a 'Preview' thumbnail for every video in my gallery so I can see what I'm clicking"
+          "user-msg"
         ]
       },
       "acceptanceCriteria": [
-        "Every video in the media gallery displays a thumbnail preview image",
-        "Thumbnails are generated from the video content (e.g., first frame or mid-point frame)",
-        "Thumbnails are visible in both the MediaLibrary grid view and when videos appear in the calendar sidebar",
-        "Thumbnails load efficiently without impacting page performance"
+        "The VideoUpload component correctly imports and uses the useInternetIdentity hook",
+        "The login function is properly bound to the button's onClick handler",
+        "Console errors related to the authentication flow are resolved"
       ]
     }
   ],
   "constraints": [
-    "Do not modify Internet Identity authentication hooks (frontend/src/hooks/useInternetIdentity.ts)",
-    "Do not edit UI component library files (frontend/src/components/ui/*)",
-    "Maintain single-actor architecture in backend/main.mo",
-    "Preserve existing video upload and storage functionality"
+    "Do not modify the useInternetIdentity hook implementation",
+    "Maintain the existing visual design and button styling shown in the screenshot",
+    "Preserve the authentication state checking logic"
   ],
   "nonGoals": [
-    "Adding video editing capabilities",
-    "Supporting video formats other than .mp4",
-    "Implementing server-side video transcoding",
-    "Adding video streaming protocols beyond standard HTML5 video"
+    "Changing the overall authentication architecture",
+    "Modifying the Layout component's login button (which works correctly)",
+    "Adding new authentication methods beyond Internet Identity"
   ],
   "imageRequirements": {
     "required": [],

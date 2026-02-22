@@ -19,6 +19,12 @@ export const _CaffeineStorageRefillResult = IDL.Record({
   'success' : IDL.Opt(IDL.Bool),
   'topped_up_amount' : IDL.Opt(IDL.Nat),
 });
+export const Itinerary = IDL.Record({
+  'id' : IDL.Text,
+  'cta' : IDL.Text,
+  'days' : IDL.Vec(IDL.Text),
+  'hook' : IDL.Text,
+});
 export const Time = IDL.Int;
 export const Platform = IDL.Variant({
   'tiktok' : IDL.Null,
@@ -77,6 +83,7 @@ export const idlService = IDL.Service({
       [],
     ),
   '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
+  'getAllItineraries' : IDL.Func([], [IDL.Vec(Itinerary)], ['query']),
   'getAllScheduledPosts' : IDL.Func([], [IDL.Vec(ScheduledPost)], ['query']),
   'getAllVideos' : IDL.Func([], [IDL.Vec(Video)], ['query']),
   'getScheduledPosts' : IDL.Func(
@@ -86,6 +93,11 @@ export const idlService = IDL.Service({
     ),
   'getVideoWorkspace' : IDL.Func([IDL.Text], [Workspace], ['query']),
   'getVideosByWorkspace' : IDL.Func([Workspace], [IDL.Vec(Video)], ['query']),
+  'saveItinerary' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Vec(IDL.Text), IDL.Text],
+      [],
+      [],
+    ),
   'schedulePost' : IDL.Func(
       [IDL.Text, Workspace, IDL.Vec(Platform), Caption, Time],
       [],
@@ -111,6 +123,12 @@ export const idlFactory = ({ IDL }) => {
   const _CaffeineStorageRefillResult = IDL.Record({
     'success' : IDL.Opt(IDL.Bool),
     'topped_up_amount' : IDL.Opt(IDL.Nat),
+  });
+  const Itinerary = IDL.Record({
+    'id' : IDL.Text,
+    'cta' : IDL.Text,
+    'days' : IDL.Vec(IDL.Text),
+    'hook' : IDL.Text,
   });
   const Time = IDL.Int;
   const Platform = IDL.Variant({
@@ -170,6 +188,7 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
+    'getAllItineraries' : IDL.Func([], [IDL.Vec(Itinerary)], ['query']),
     'getAllScheduledPosts' : IDL.Func([], [IDL.Vec(ScheduledPost)], ['query']),
     'getAllVideos' : IDL.Func([], [IDL.Vec(Video)], ['query']),
     'getScheduledPosts' : IDL.Func(
@@ -179,6 +198,11 @@ export const idlFactory = ({ IDL }) => {
       ),
     'getVideoWorkspace' : IDL.Func([IDL.Text], [Workspace], ['query']),
     'getVideosByWorkspace' : IDL.Func([Workspace], [IDL.Vec(Video)], ['query']),
+    'saveItinerary' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Vec(IDL.Text), IDL.Text],
+        [],
+        [],
+      ),
     'schedulePost' : IDL.Func(
         [IDL.Text, Workspace, IDL.Vec(Platform), Caption, Time],
         [],

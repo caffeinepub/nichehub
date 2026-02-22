@@ -1,10 +1,10 @@
 {
-  "frontend/src/App.tsx": "Main application component that wraps the app with ThemeProvider and WorkspaceProvider, renders the workspace toggle, and displays tabbed navigation between Media Library and Schedule Calendar views.",
+  "frontend/src/App.tsx": "Main application component with ThemeProvider, WorkspaceProvider, Layout, and three-tab navigation (Media Library, Schedule, Script Lab) using shadcn/ui Tabs component.",
   "frontend/src/contexts/WorkspaceContext.tsx": "React context provider that manages the active workspace state (Travel or AI Learning) with localStorage persistence for session continuity.",
-  "frontend/src/components/Layout.tsx": "Application layout with header containing branding, login/logout buttons, help icon, main content area, and footer with social icons and Caffeine.ai attribution.",
+  "frontend/src/components/Layout.tsx": "Application layout with header containing branding, login/logout buttons with error handling and toast notifications, help icon, main content area, and footer with social icons and Caffeine.ai attribution.",
   "frontend/src/components/WorkspaceToggle.tsx": "Toggle component at the top of the interface allowing users to switch between Travel and AI Learning workspaces with visual icons.",
   "frontend/src/components/MediaLibrary.tsx": "Media library component displaying uploaded videos in a grid layout with upload interface, managing both RepurposeModal and VideoPlayerModal states for the active workspace.",
-  "frontend/src/components/VideoUpload.tsx": "Video upload component with authentication check, thumbnail generation during upload, file input, progress tracking, and login prompt for unauthenticated users.",
+  "frontend/src/components/VideoUpload.tsx": "Video upload component with authentication check that triggers Internet Identity login flow when unauthenticated users click the button, includes thumbnail generation during upload, file input, progress tracking, and proper loading states for both login and upload operations.",
   "frontend/src/components/VideoCard.tsx": "Video card component displaying thumbnail preview with play button overlay on hover, caption, Repurpose button, and click handler to open video player modal while preserving drag-and-drop functionality.",
   "frontend/src/components/RepurposeModal.tsx": "Modal dialog for AI caption generation with editable platform-specific captions, Copy Captions button for clipboard export, and Schedule button with authentication check.",
   "frontend/src/components/PostNowButton.tsx": "Button component that immediately publishes video content to selected social platforms with loading states and per-platform success/error feedback.",
@@ -13,12 +13,14 @@
   "frontend/src/components/Calendar.tsx": "Monthly calendar view displaying scheduled posts with drag-and-drop support for scheduling videos by dropping them onto specific dates.",
   "frontend/src/components/ScheduledPostItem.tsx": "Scheduled post display component showing thumbnail, time, platform icons, and Copy Captions button with tooltip explaining manual posting workflow.",
   "frontend/src/components/TimePickerModal.tsx": "Modal triggered by calendar drag-and-drop with time selection, platform selection, caption generation, and explanatory note about manual posting workflow.",
-  "frontend/src/hooks/useQueries.ts": "Custom React Query hooks for fetching videos and scheduled posts by workspace, uploading videos with thumbnail generation and progress tracking, and scheduling posts with automatic cache invalidation.",
+  "frontend/src/hooks/useQueries.ts": "Custom React Query hooks for fetching videos and scheduled posts by workspace, uploading videos with thumbnail generation and progress tracking, scheduling posts, and saving itineraries with automatic cache invalidation.",
   "frontend/src/utils/captionGenerator.ts": "Utility function that generates platform-optimized captions (Facebook conversational, Instagram hashtag-heavy, TikTok trend-focused) with simulated AI delay.",
   "frontend/src/utils/socialPlatformPublisher.ts": "Utility function simulating social media API calls for publishing content to Facebook, Instagram, and TikTok with success/error results.",
   "frontend/src/index.css": "Global styles with dark theme OKLCH color system, touch-friendly minimum sizes (44px), smooth scrolling, and mobile-optimized typography.",
   "frontend/tailwind.config.js": "Tailwind configuration with dark theme colors using purple accent (280 hue), mobile-first container padding, and extended utilities for the minimalist dark design.",
   "frontend/src/components/HelpModal.tsx": "Help modal explaining the manual export workflow with step-by-step instructions for uploading, generating captions, scheduling, and manually posting content.",
   "frontend/src/utils/thumbnailGenerator.ts": "Utility function that generates a JPEG thumbnail from a video file by loading it in a video element, seeking to the first frame or 10% duration, capturing it to canvas, and converting to Uint8Array bytes.",
-  "frontend/src/components/VideoPlayerModal.tsx": "Modal dialog component that displays a high-definition HTML5 video player with native controls supporting .mp4 and 4K playback, using ExternalBlob.getDirectURL() for streaming."
+  "frontend/src/components/VideoPlayerModal.tsx": "Modal dialog component that displays a high-definition HTML5 video player with native controls supporting .mp4 and 4K playback, using ExternalBlob.getDirectURL() for streaming.",
+  "frontend/src/components/ScriptLab.tsx": "Script Lab component displaying workspace-filtered videos in a selectable grid, with 'Generate Itinerary Script' button that creates cinematic travel itineraries with editable Hook, Body (3-day), and CTA sections, plus copy-to-clipboard functionality.",
+  "frontend/src/utils/itineraryGenerator.ts": "Utility function that generates cinematic travel itinerary scripts with a 3-second hook overlay, numbered 3-day itinerary body, and save-for-later CTA using a Travel Expert persona with engaging, helpful tone."
 }

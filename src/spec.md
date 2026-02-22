@@ -1,12 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Implement a high-definition video player with preview thumbnails for the Media Gallery.
+**Goal:** Fix the non-functional "Login to Upload" button in the Media Library so unauthenticated users can trigger the Internet Identity authentication flow.
 
 **Planned changes:**
-- Replace current video playback with an HD video player component that supports .mp4 and 4K resolution
-- Add standard playback controls (play, pause, volume, fullscreen, seek bar) to the video player
-- Generate and display preview thumbnail images for every video in the gallery
-- Ensure thumbnails appear in both the MediaLibrary grid view and calendar sidebar
+- Debug and fix the onClick handler for the "Login to Upload" button in the VideoUpload component
+- Verify the useInternetIdentity hook is properly imported and the login function is correctly bound to the button
+- Ensure error states are handled with toast notifications
+- Test button functionality on mobile devices
 
-**User-visible outcome:** Users can click on any video to open it in a high-definition player with full controls, and can see preview thumbnails for all videos before clicking them.
+**User-visible outcome:** Users can click the "Login to Upload" button to authenticate via Internet Identity and access the file upload interface.

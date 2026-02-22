@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 7,
+  "projectStateVersion": 13,
   "summary": "NicheHub: A mobile content management and social media scheduling app that allows users to manage two niche workspaces (Travel and AI Learning), repurpose video content with AI-generated captions for multiple platforms, and schedule posts via a visual calendar. The app uses Internet Identity for authentication and provides a manual export workflow where users can generate optimized captions and prepare content for Facebook, TikTok, and Instagram, then copy/paste to each platform's native app.",
   "architectural_notes": [
     "Mobile-first responsive design optimized for on-the-go use",
@@ -11,9 +11,12 @@
     "Media upload and storage system with workspace isolation",
     "Internet Identity authentication system using passkeys/biometrics (no third-party OAuth)",
     "Manual export workflow: users copy/paste generated captions to native social media apps",
-    "No direct social media API integrations (Facebook, TikTok, Instagram posting APIs not supported)"
+    "No direct social media API integrations (Facebook, TikTok, Instagram posting APIs not supported)",
+    "Script Lab feature for specialized AI content generation with structured output formats"
   ],
-  "known_issues": [],
+  "known_issues": [
+    "Login to upload button is not functioning"
+  ],
   "isFixRequest": true,
   "existing_features": [
     {
@@ -135,6 +138,86 @@
         "REQ-17"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-create-a-new-script-lab-section-accessible-from-the-main-navigation-tabs-alongside-media-library-and-schedule-calendar",
+      "title": "Create a new 'Script Lab' section accessible from the main navigation tabs alongside Media Library and Schedule Calendar",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-script-lab-display-all-videos-from-the-currently-active-workspace-travel-or-ai-learning-in-a-selectable-list-or-grid-format",
+      "title": "In Script Lab, display all videos from the currently active workspace (Travel or AI Learning) in a selectable list or grid format",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-generate-itinerary-script-button-that-appears-when-a-video-is-selected-in-script-lab",
+      "title": "Add a 'Generate Itinerary Script' button that appears when a video is selected in Script Lab",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-display-the-generated-itinerary-script-in-script-lab-with-clear-visual-separation-between-hook-body-and-cta-sections-each-section-should-be-labeled-and-formatted-for-easy-reading",
+      "title": "Display the generated itinerary script in Script Lab with clear visual separation between Hook, Body, and CTA sections. Each section should be labeled and formatted for easy reading.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-copy-script-button-below-the-generated-itinerary-script-that-copies-all-sections-hook-body-cta-to-the-clipboard-in-a-formatted-structure",
+      "title": "Add a 'Copy Script' button below the generated itinerary script that copies all sections (Hook, Body, CTA) to the clipboard in a formatted structure",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-each-section-of-the-generated-script-hook-body-cta-editable-so-users-can-refine-the-ai-generated-content-before-copying",
+      "title": "Make each section of the generated script (Hook, Body, CTA) editable so users can refine the AI-generated content before copying",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-debug-and-fix-the-login-button-in-the-layout-component-header-to-properly-trigger-the-internet-identity-authentication-flow-using-the-useinternetidentity-hook-s-login-function",
+      "title": "Debug and fix the login button in the Layout component header to properly trigger the Internet Identity authentication flow using the useInternetIdentity hook's login function",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-that-the-useinternetidentity-hook-s-login-function-is-properly-integrated-and-handles-errors-gracefully-with-user-feedback-via-toast-notifications",
+      "title": "Verify that the useInternetIdentity hook's login function is properly integrated and handles errors gracefully with user feedback via toast notifications",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-debug-and-fix-the-login-to-upload-button-in-the-videoupload-component-that-is-not-triggering-the-internet-identity-authentication-flow-when-clicked-by-an-unauthenticated-user",
+      "title": "Debug and fix the 'Login to Upload' button in the VideoUpload component that is not triggering the Internet Identity authentication flow when clicked by an unauthenticated user",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-that-the-videoupload-component-properly-accesses-the-login-function-from-the-useinternetidentity-hook-and-invokes-it-when-the-login-to-upload-button-is-clicked",
+      "title": "Verify that the VideoUpload component properly accesses the login function from the useInternetIdentity hook and invokes it when the 'Login to Upload' button is clicked",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -194,6 +277,20 @@
       "id": "AR-15",
       "summary": "Add preview thumbnails for all videos in the media gallery",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Create Script Lab section with 'Generate Itinerary Script' button for travel videos. AI generates structured content: Hook (3-second overlay text), Body (numbered 3-day itinerary), CTA ('Save for later' prompt). Use 'Travel Expert' persona with cinematic, helpful tone.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-20",
+      "summary": "Create a backend function that generates a structured travel itinerary script with three sections: Hook (3-second visual text overlay), Body (numbered 3-day itinerary), and CTA ('Save for later' prompt). Use a 'Travel Expert' persona that is cinematic and helpful in tone.",
+      "reqIds": [
+        "REQ-21"
+      ],
       "status": "pending"
     }
   ],

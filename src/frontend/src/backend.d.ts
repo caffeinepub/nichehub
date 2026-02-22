@@ -27,6 +27,12 @@ export interface Caption {
     facebook: string;
 }
 export type Time = bigint;
+export interface Itinerary {
+    id: string;
+    cta: string;
+    days: Array<string>;
+    hook: string;
+}
 export interface ScheduledPost {
     scheduledTime: Time;
     platforms: Array<Platform>;
@@ -44,11 +50,13 @@ export enum Workspace {
     aiLearning = "aiLearning"
 }
 export interface backendInterface {
+    getAllItineraries(): Promise<Array<Itinerary>>;
     getAllScheduledPosts(): Promise<Array<ScheduledPost>>;
     getAllVideos(): Promise<Array<Video>>;
     getScheduledPosts(workspace: Workspace): Promise<Array<ScheduledPost>>;
     getVideoWorkspace(id: string): Promise<Workspace>;
     getVideosByWorkspace(workspace: Workspace): Promise<Array<Video>>;
+    saveItinerary(id: string, hook: string, days: Array<string>, cta: string): Promise<void>;
     schedulePost(videoId: string, workspace: Workspace, platforms: Array<Platform>, captions: Caption, scheduledTime: Time): Promise<void>;
     uploadVideo(workspace: Workspace, id: string, file: ExternalBlob, caption: string, thumbnail: ExternalBlob | null): Promise<void>;
 }

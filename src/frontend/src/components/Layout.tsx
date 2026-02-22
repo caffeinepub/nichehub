@@ -3,16 +3,58 @@ import { SiFacebook, SiInstagram, SiTiktok } from 'react-icons/si';
 import { Heart, LogIn, LogOut, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import HelpModal from './HelpModal';
+import { toast } from 'sonner';
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { login, clear, isLoginSuccess, isLoggingIn } = useInternetIdentity();
+  const { login, clear, isLoginSuccess, isLoggingIn, isLoginError, loginError } = useInternetIdentity();
   const [showHelp, setShowHelp] = useState(false);
+
+  // Handle login errors with toast notifications
+  useEffect(() => {
+    if (isLoginError && loginError) {
+      toast.error('Login Failed', {
+        description: loginError.message || 'Unable to authenticate. Please try again.',
+      });
+    }
+  }, [isLoginError, loginError]);
+
+  // Handle successful login
+  useEffect(() => {
+    if (isLoginSuccess) {
+      toast.success('Login Successful', {
+        description: 'You are now authenticated.',
+      });
+    }
+  }, [isLoginSuccess]);
+
+  const handleLogin = () => {
+    try {
+      login();
+    } catch (error) {
+      toast.error('Login Error', {
+        description: error instanceof Error ? error.message : 'An unexpected error occurred.',
+      });
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      clear();
+      toast.success('Logged Out', {
+        description: 'You have been successfully logged out.',
+      });
+    } catch (error) {
+      toast.error('Logout Error', {
+        description: error instanceof Error ? error.message : 'An unexpected error occurred.',
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -34,7 +76,7 @@ export default function Layout({ children }: LayoutProps) {
               </Button>
               {isLoginSuccess ? (
                 <Button
-                  onClick={clear}
+                  onClick={handleLogout}
                   variant="outline"
                   size="sm"
                   className="gap-2"
@@ -44,7 +86,7 @@ export default function Layout({ children }: LayoutProps) {
                 </Button>
               ) : (
                 <Button
-                  onClick={login}
+                  onClick={handleLogin}
                   disabled={isLoggingIn}
                   size="sm"
                   className="gap-2"

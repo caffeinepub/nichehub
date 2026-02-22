@@ -16,6 +16,12 @@ export interface Caption {
   'facebook' : string,
 }
 export type ExternalBlob = Uint8Array;
+export interface Itinerary {
+  'id' : string,
+  'cta' : string,
+  'days' : Array<string>,
+  'hook' : string,
+}
 export type Platform = { 'tiktok' : null } |
   { 'instagram' : null } |
   { 'facebook' : null };
@@ -63,11 +69,16 @@ export interface _SERVICE {
     _CaffeineStorageRefillResult
   >,
   '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
+  'getAllItineraries' : ActorMethod<[], Array<Itinerary>>,
   'getAllScheduledPosts' : ActorMethod<[], Array<ScheduledPost>>,
   'getAllVideos' : ActorMethod<[], Array<Video>>,
   'getScheduledPosts' : ActorMethod<[Workspace], Array<ScheduledPost>>,
   'getVideoWorkspace' : ActorMethod<[string], Workspace>,
   'getVideosByWorkspace' : ActorMethod<[Workspace], Array<Video>>,
+  'saveItinerary' : ActorMethod<
+    [string, string, Array<string>, string],
+    undefined
+  >,
   'schedulePost' : ActorMethod<
     [string, Workspace, Array<Platform>, Caption, Time],
     undefined
